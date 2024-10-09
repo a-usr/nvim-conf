@@ -23,7 +23,7 @@ end
 --   capabilities = nvlsp.capabilities,
 -- }
 lspconfig.omnisharp.setup {
-  cmd = { require("mason-registry").get_package("omnisharp").spec.bin.omnisharp },
+  cmd = { "omnisharp" },
   settings = {
     FormattingOptions = {
       -- Enables support for reading code style, naming convention and analyzer

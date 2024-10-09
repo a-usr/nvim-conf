@@ -4,4 +4,4 @@ require "nvchad.options"
 
 local o = vim.o
 -- o.cursorlineopt ='both' -- to enable cursorline!
-o.shell = "pwsh"
+o.shell = vim.fn.has("win32") == 1 and "pwsh" or "fish"
