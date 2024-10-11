@@ -7,12 +7,26 @@ local mappingProto = {}
 
 local M = {}
 
+---map stuff
+---@param proto mapping.proto
 function M:Map(proto)
-  local submap = proto.submap
+  local submaps = proto.submap
   if type(proto[2]) ~= "function" and type(proto[2]) ~= "string" then
-    submap = proto[2]
+    ---@cast proto[2] mapping.proto[]
+    submaps = proto[2]
   end
-  if submap then
-    
+  local maps = {} ---@type wk.Spec[]
+  if proto.group then
+    local groupmap = {} ---@type wk.Spec
+    groupmap[1] = proto[1]
+
+    groupmap.group = proto.group
+    groupmap.icon = proto.icon
+    table.insert(proto, groupmap)
+  end
+  if submaps then
+    for _, submap in pairs(submaps) do
+      local map = M:Map(submap)
+    end
   end
 end
