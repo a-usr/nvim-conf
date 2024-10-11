@@ -52,6 +52,9 @@ require("lspconfig").lua_ls.setup {
     },
   }
 
+lspconfig.jdtls.setup {
+  cmd = require("configs.os-dependend").lsp.jdtls.cmd
+}
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
 --   on_attach = nvlsp.on_attach,
