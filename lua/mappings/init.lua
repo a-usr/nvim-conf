@@ -1,22 +1,32 @@
 require "nvchad.mappings"
 
 -- add yours here
-
 local map = vim.keymap.set
 local unmap = vim.keymap.del
 
---map leader+lhs in normal mode
----@param lhs string
----@param rhs string | function
----@param opts? vim.keymap.set.Opts
-local function mapnleader(lhs, rhs, opts)
-  map("n", "<leader>"..lhs, rhs, opts)
+
+local mappinglocs = {
+ "lsp",
+}
+
+local mappingExports = {} ---@type mappings.mappingProto[]
+
+for _, mappingloc in pairs(mappinglocs) do
+  local mappingdefs = require("mappings."..mappingloc) ---@type mappings.mappingProto[]
+  for _, mappingdef in pairs(mappingdefs) do
+
+    if mappingdef.mapOn == "startup" then
+      require("which-key").add(mappingdef:ToWhickKeySpec())
+    else
+      table.insert(mappingExports, mappingdef)
+    end
+
+  end
 end
 
 
 unmap("n", "<leader>ds")
 
-map("n", ";", ":", { desc = "CMD enter command mode" })
 
 map("n", "<leader>tt", function()
   require("base46").toggle_transparency()
@@ -24,22 +34,6 @@ map("n", "<leader>tt", function()
 
 
 -- LSP mappings
-
-map("n","<leader>ld", function ()
-  require("telescope.builtin").diagnostics()
-end, {desc = "LSP Show Diagnostics in Telescope"})
-
-map("n", "<leader>ls", function ()
-  require("telescope.builtin").lsp_document_symbols()
-end, {desc = "LSP List Document Symbols"})
-
-map("n", "<leader>lS", function ()
-  require("telescope.builtin").lsp_references()
-end, {desc = "LSP Show Symbol References"})
-
-mapnleader("lr", function ()
-  require("nvchad.lsp.renamer")()
-end, { desc = "LSP Rename Symbol"})
 
 
 -- Diagnostics
@@ -54,5 +48,4 @@ end, {desc = "Diagnostics Show Diagnostics"})
 
 -- DAP
 
---mapnleader("")
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+return mappingExports

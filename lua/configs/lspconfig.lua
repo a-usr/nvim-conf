@@ -7,14 +7,50 @@ local lspconfig = require "lspconfig"
 local servers = { "html", "cssls", "omnisharp", "jdtls"}
 local nvlsp = require "nvchad.configs.lspconfig"
 
+local on_attach = function (_, bufnr)
+      nvlsp.on_attach(_, bufnr) -- TODO: REMOVE
+
+      for _, mappingDef in pairs(require("mappings")) do
+        if mappingDef.mapOn == "LSP attach" then
+          require("which-key").add(mappingDef:ToWhickKeySpec())
+        end
+      end
+
+    end
+
 -- lsps with default config
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
-    on_attach = nvlsp.on_attach,
+    on_attach = on_attach,
     on_init = nvlsp.on_init,
     capabilities = nvlsp.capabilities,
   }
 end
+
+require("lspconfig").lua_ls.setup {
+    on_attach = on_attach,
+    capabilities = nvlsp.capabilities,
+    on_init = nvlsp.on_init,
+
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = { "vim" },
+        },
+        workspace = {
+          library = {
+            vim.fn.expand "$VIMRUNTIME/lua",
+            vim.fn.expand "$VIMRUNTIME/lua/vim/lsp",
+            vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types",
+            vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
+            "${3rd}/luv/library",
+          },
+          maxPreload = 100000,
+          preloadFileSize = 10000,
+        },
+      },
+    },
+  }
 
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
