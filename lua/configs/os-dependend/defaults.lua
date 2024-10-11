@@ -1,6 +1,6 @@
 
 local M = {
-  lsps = {
+  lsp = {
     jdtls = {
       cmd = { "jdtls" }
     }
