@@ -1,4 +1,4 @@
-
+---@module "which-key"
 
 ---@class mapping.proto: wk.Spec
 ---@field [2]? string|fun()|mapping.proto[] rhs/submap
@@ -9,24 +9,38 @@ local M = {}
 
 ---map stuff
 ---@param proto mapping.proto
+---@return wk.Spec[]
 function M:Map(proto)
   local submaps = proto.submap
-  if type(proto[2]) ~= "function" and type(proto[2]) ~= "string" then
-    ---@cast proto[2] mapping.proto[]
-    submaps = proto[2]
-  end
-  local maps = {} ---@type wk.Spec[]
-  if proto.group then
-    local groupmap = {} ---@type wk.Spec
-    groupmap[1] = proto[1]
 
-    groupmap.group = proto.group
-    groupmap.icon = proto.icon
-    table.insert(proto, groupmap)
+  local _submaps = proto[2] -- for some reason casting proto[2] directly changes proto[1] to possibly be `2`
+  if type(_submaps) ~= "function" and type(_submaps) ~= "string" then
+    ---@cast _submaps mapping.proto[]
+    submaps = _submaps
   end
+
+  local maps = {} ---@type wk.Spec[]
+
+  -- check wether the current prototype is a group and insert the respective keybind
+  if proto.group then
+    local groupBind = {} ---@type wk.Spec
+    groupBind[1] = proto[1]
+
+    groupBind.group = proto.group
+    groupBind.icon = proto.icon
+    table.insert(maps, groupBind)
+  end
+
+  --handle submaps
   if submaps then
     for _, submap in pairs(submaps) do
       local map = M:Map(submap)
+      for _, bind in pairs(map) do
+        bind[1] = proto[1]..bind[1]
+        table.insert(maps, bind)
+      end
     end
   end
+
+  return maps
 end
