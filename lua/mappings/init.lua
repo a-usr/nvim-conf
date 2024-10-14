@@ -9,21 +9,12 @@ local mappinglocs = {
  "lsp",
 }
 
-local mappingExports = {} ---@type mappings.mappingProto[]
+local mappings = {} ---@type mapping.proto[]
 
 for _, mappingloc in pairs(mappinglocs) do
-  local mappingdefs = require("mappings."..mappingloc) ---@type mappings.mappingProto[]
-  for _, mappingdef in pairs(mappingdefs) do
-
-    if mappingdef.mapOn == "startup" then
-      require("which-key").add(mappingdef:ToWhickKeySpec())
-    else
-      table.insert(mappingExports, mappingdef)
-    end
-
-  end
+  table.insert(mappings, require("mappings."..mappingloc)) ---@type mapping.proto
 end
-
+require("which-key").add(require("mappings.util").GetMapsOnStartup(mappings))
 
 unmap("n", "<leader>ds")
 
@@ -48,4 +39,4 @@ end, {desc = "Diagnostics Show Diagnostics"})
 
 -- DAP
 
-return mappingExports
+return mappings

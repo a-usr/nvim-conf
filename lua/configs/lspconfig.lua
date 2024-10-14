@@ -10,12 +10,8 @@ local nvlsp = require "nvchad.configs.lspconfig"
 local on_attach = function (_, bufnr)
       nvlsp.on_attach(_, bufnr) -- TODO: REMOVE
 
-      for _, mappingDef in pairs(require("mappings")) do
-        if mappingDef.mapOn == "LSP attach" then
-          require("which-key").add(mappingDef:ToWhickKeySpec())
-        end
-      end
-
+      local mappings = require("mappings")
+       require("which-key").add(require("mappings.util").GetMapsOn("LSP attach", mappings))
     end
 
 -- lsps with default config
