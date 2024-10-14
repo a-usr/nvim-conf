@@ -1,121 +1,147 @@
+---@module "which-key"
+
+
+---@alias mapping.mapEvent "startup"|"LSP attach"
+---@alias mapping.proto.type "bind"|"group"
+
+
+---@class mapping.proto: wk.Spec
+---@field [1] string|mapping.proto
+---@field [2]? string|fun()|mapping.proto rhs/submap
+---@field [number]? mapping.proto
+---@field on? mapping.mapEvent
+---@field type? mapping.proto.type
+local mappingProto = {}
+
 local M = {}
 
----@alias mappings.mapEvent "startup"|"LSP attach"
+---Makes a mapping.proto partially compatible with wk.Spec, by putting non-numbered attributes into a metatable 
+---@param proto mapping.proto
+---@return mapping.proto
+local function mkWkSpecCompatible(proto)
+  local metatable = getmetatable(proto) or {}
+  metatable.__index = metatable
+  metatable.type = proto.type
+  proto.type = nil
 
----@class mappings.util.mapping
----@field [1]? string
----@field description? string
----
----@field [2]? string
----@field lhs? string
----
----@field [3]? string|function
----@field rhs? string|function
----
----@field mode? VimKeymapMode|VimKeymapMode[]
----@field category? string
----@field icon? string
----@field highlight? string
----@field on? mappings.mapEvent
+  metatable.on = proto.on
+  proto.on = nil
 
+  return setmetatable(proto, metatable)
+end
 
----@class mappings.mappingProto
----@field [1] string lhs
----@field [2] string|function rhs
----@field mode VimKeymapMode|VimKeymapMode[]
----@field opts vim.keymap.set.Opts
----@field menuName string
----@field menuHighlight string
----@field mapOn mappings.mapEvent
----@field group string
-local mappingProto = {}
-mappingProto.__index = mappingProto
----Converts this to a whichkey spec. This performs copy-ing
----@return { [1]: wk.Spec }
-function mappingProto:ToWhickKeySpec()
-  local excludedFields = { menuName=true, menuHighlight=true, mapOn = true }
+local function normalize(proto, lead)
+  if type(proto[1]) == "string" then -- Regular bind
+    proto[1] = lead..proto[1]
+  else -- group
+    for k, km in pairs(proto) do
+      if type(k) == "number" then
+        normalize(km, lead)
+      end
+    end
+  end
+end
+---map stuff
+---@param proto mapping.proto
+---@return mapping.proto
+function M.Map(proto)
 
-  local spec = {}
-  -- copy without opts
-  for k, v in pairs(self) do
-    if not excludedFields[k] then
-      spec[k] = v
+  if type(proto[2]) ~= "table" and proto[2] then -- proto is a "normal" wk.Spec
+    proto.type = "bind"
+    return { mkWkSpecCompatible(proto) }
+  end
+
+  --inherit group stuff
+  local prototmp = {}
+
+  -- check wether the current prototype is a which-key group and insert the respective keybind
+  if proto.group then
+    assert(type(proto[1]) == "string", "groups need a common identifier!")
+    local groupBind = { proto[1] } ---@type mapping.proto
+
+    groupBind.group = proto.group
+    groupBind.icon = proto.icon
+    groupBind.type = "bind"
+    table.insert(prototmp, mkWkSpecCompatible(groupBind))
+    proto.group = nil
+  end
+
+  for index, sm in pairs(proto) do
+    if type(sm) == "table" and type(index) == "number" then
+
+      local map = M.Map(sm)
+      local canFlatten = true
+
+      for key, bind in pairs(map) do
+
+        if type(proto[1]) == "string" and type(key) == "number" then
+          normalize(bind, proto[1])
+        end
+
+        if type(key) ~= "number" then canFlatten = false end
+
+      end
+
+      if canFlatten then
+        for _,v in pairs(map) do table.insert(prototmp, v) end
+      else
+        map.type = "group"
+        table.insert(prototmp, mkWkSpecCompatible(map))
+      end
     end
   end
 
-
-  return spec
+  if type(proto[1]) == "string" then table.remove(proto, 1) end
+  for i, km in pairs(prototmp) do proto[i] = km end
+  proto.type = "group"
+  return mkWkSpecCompatible(proto)
 end
 
----map a Keybinding
----@param mode VimKeymapMode|VimKeymapMode[]
----@param lhs string
----@param rhs string|function
----@param description string
----@param menuName? string
----@param highlight? string
----@param mapOn? mappings.mapEvent
----@return mappings.mappingProto
-function M.map(mode, lhs, rhs, description, menuName, highlight, groupName, mapOn)
-  return setmetatable({
-    lhs,
-    rhs,
-    mode = mode,
-    desc = description,
-    menuName = menuName,
-    menuHighlight = highlight,
-    mapOn = mapOn or "startup",
-    group = groupName,
-  }, mappingProto)
-end
+---Get Maps that should be mapped when "on" occurs
+---@param on mapping.mapEvent
+---@param maps mapping.proto[]
+---@param strict? boolean
+---@return wk.Spec
+function M.GetMapsOn(on, maps, strict)
+  if strict == nil then strict = true end
 
----Map a Keybinding
----@param description string the description of the Binding
----@param mode VimKeymapMode|VimKeymapMode[] The mode
----@param lhs string the key combination
----@param rhs string|function the action to perform
----@param category? string the category it is displayed in in the cheatsheet
----@param icon? string the Icon the right-click menu will use
----@param highlight? string The highlight group for the right-click menu
----@param on? mappings.mapEvent When to map the keybind. Default is `"startup"`
-function M.Map(description, mode, lhs, rhs, category, icon, highlight, on)
-  category = category or ""
-  icon = icon or ""
-  return M.map(mode, lhs, rhs, description , icon.." "..description, highlight, category, on)
-end
-
----Map a Keybinding in Normal mode
----@param description string the description of the Binding
----@param lhs string the key combination
----@param rhs string|function the action to perform
----@param category? string the category it is displayed in in the cheatsheet
----@param icon? string the Icon the right-click menu will use
----@param highlight? string The highlight group for the right-click menu
-function M.MapN(description, lhs, rhs, category, icon, highlight)
-  return M.Map(description, "n", lhs, rhs, category, icon, highlight)
-end
-
----Map many keymaps
----@param maps mappings.util.mapping[]
----@return table
-function M.MapMany(maps)
-  local arr = {}
-
-  for _, map in pairs(maps) do
-    local desc = map.description or map[1] or ""
-    local mode = map.mode or "n"
-    local lhs = map.lhs or map[2] or error("Tried to create new keybind, but without a LHS!", 2)
-    local rhs = map.rhs or map[3] or error("Tried to create new keybind, but without a RHS!", 2)
-    table.insert(arr, M.Map(desc, mode, lhs, rhs, map.category, map.icon, map.highlight, map.on))
+  local found = {}
+  for key, map in pairs(maps) do
+    if type(key) == "number" then
+      if map.on == on or (strict == false and map.on == nil) then
+        if map.type == "bind" then
+          table.insert(found, map)
+        else
+          for _, v in pairs(M.GetMapsOn(on, map, false)) do
+            table.insert(found, v)
+          end
+        end
+      else
+        if map.type == "group" then
+          for _, v in pairs(M.GetMapsOn(on, map, true)) do
+            table.insert(found,v)
+          end
+        end
+      end
+    end
   end
-  return arr
+
+  local out = {}
+  for _, match in pairs(found) do
+    local copy = {}
+    for k, v in pairs(maps) do if type(k) ~= "number" then copy[k] = v end end
+    for k, v in pairs(match) do copy[k] = v end
+    table.insert(out, copy)
+  end
+  return out
+
 end
 
----Create a Keybind string beginning with the leader
----@param keys string The keys after the leader
----@return string A string containing `"<leader>"` followed by the `keys`
-function M.L(keys)
-  return "<leader>"..keys
-end
 
+---Get Maps that should be mapped on startup
+---@param maps mapping.proto[]
+---@return wk.Spec[]
+function M.GetMapsOnStartup(maps)
+  return M.GetMapsOn("startup", maps, false)
+end
 return M
