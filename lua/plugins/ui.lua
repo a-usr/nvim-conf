@@ -1,5 +1,17 @@
 return {
 
+  {
+    "nvim-tree/nvim-tree.lua",
+    -- enabled = false,
+  },
+
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+  },
+  {
+    "a-usr/base46",
+    name = "base46",
+  },
   { -- optional completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
@@ -50,4 +62,4 @@ return {
       -- },
     },
   },
-}
+} ---@type LazySpec
