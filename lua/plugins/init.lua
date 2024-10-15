@@ -15,25 +15,34 @@ return {
   },
 
   {
-    "Shatur/neovim-session-manager",
+    "folke/persistence.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
-    cmd = "SessionManager",
-    keys = {
-      { "<leader><TAB>l", "<cmd>SessionManager load_session<cr>", desc = "SessionManager Load Session" },
-      {
-        "<leader><TAB>s",
-        "<cmd>SessionManager save_current_session<cr>",
-        desc = "SessionManager Save current Session",
-      },
-      { "<leader><TAB>r", "<cmd>SessionManager load_last_session<cr>", desc = "SessionManager Load last Session" },
+    event = "BufReadPre", -- this will only start session saving when an actual file was opened
+    opts = {
+      -- add any custom options here
     },
-    config = function()
-      local config = require "session_manager.config"
-      require("session_manager").setup {
-        autoload_mode = config.AutoloadMode.Disabled,
-      }
-    end,
   },
+
+  -- {
+  --   "Shatur/neovim-session-manager",
+  --   dependencies = { "nvim-telescope/telescope.nvim" },
+  --   cmd = "SessionManager",
+  --   keys = {
+  --     { "<leader><TAB>l", "<cmd>SessionManager load_session<cr>", desc = "SessionManager Load Session" },
+  --     {
+  --       "<leader><TAB>s",
+  --       "<cmd>SessionManager save_current_session<cr>",
+  --       desc = "SessionManager Save current Session",
+  --     },
+  --     { "<leader><TAB>r", "<cmd>SessionManager load_last_session<cr>", desc = "SessionManager Load last Session" },
+  --   },
+  --   config = function()
+  --     local config = require "session_manager.config"
+  --     require("session_manager").setup {
+  --       autoload_mode = config.AutoloadMode.Disabled,
+  --     }
+  --   end,
+  -- },
 
   {
     "folke/lazydev.nvim",

@@ -40,7 +40,7 @@ M.ui = {
     },
   },
   tabufline = {
-    order = { "neoTreeOffset", "buffers", "tabs", "btns" },
+    order = { "neoTreeOffset", "treeOffset", "buffers", "tabs", "btns" },
     modules = {
       neoTreeOffset = function()
         local width = 0
