@@ -96,6 +96,25 @@ return require("mappings.util").Map {
         desc = "Toggle Comment",
       },
     },
+    --- Persistence ---
+    {
+      "<TAB>",
+      group = "Session",
+      {
+        "l",
+        function()
+          require("persistence").select()
+        end,
+        desc = "Load Session",
+      },
+      {
+        "r",
+        function()
+          require("persistence").load { last = true }
+        end,
+        desc = "Restore Session",
+      },
+    },
   },
   --- NeoTree ---
   {
@@ -121,7 +140,7 @@ return require("mappings.util").Map {
           reveal_force_cwd = false, -- change cwd without asking if needed
         }
       end,
-      desc = "Neotree Open",
+      desc = "FileTree Focus",
     },
     {
       "<C-n>",
@@ -130,6 +149,7 @@ return require("mappings.util").Map {
           toggle = true,
         }
       end,
+      desc = "FileTree Toggle",
     },
   },
 
