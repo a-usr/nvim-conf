@@ -1,7 +1,7 @@
-return function ()
-  local util = require("mappings.util")
-  local mapping = util.Map(
-    {
+return function(target)
+  local util = require "mappings.util"
+  local mapping = target and require(target)
+    or util.Map {
       "<leader>",
       {
         "f",
@@ -9,40 +9,39 @@ return function ()
         {
           "a",
           "do smth",
-          desc="a"
+          desc = "a",
         },
         {
           "b",
           "do smth else",
-          desc="b"
-        }
+          desc = "b",
+        },
       },
       {
         "c",
         "third thing",
-        desc="c",
-        on="startup"
+        desc = "c",
+        on = "startup",
       },
       {
         "k",
-        mode = {"n", "v"},
+        mode = { "n", "v" },
         group = "chee",
-        on="LSP attach",
+        on = "LSP attach",
         {
           "d",
           "fourth thing",
-          desc="D"
+          desc = "D",
         },
         {
           "q",
           {
             "e",
             "fifth thing",
-            desc="E"
-          }
-        }
-      }
+            desc = "E",
+          },
+        },
+      },
     }
-  )
-  print(vim.inspect(util.GetMapsOn("LSP attach", mapping)))
+  print(vim.inspect(mapping))
 end

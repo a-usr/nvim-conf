@@ -1,4 +1,4 @@
-local util = require("mappings.util")
+local util = require "mappings.util"
 
 return util.Map {
   "<leader>l",
@@ -10,42 +10,41 @@ return util.Map {
       group = "Diagnostics",
       {
         "s",
-        function ()
-          require("trouble").toggle( {mode = "diagnostics", filter = { buf = 0 }} )
+        function()
+          require("trouble").toggle { mode = "diagnostics", filter = { buf = 0 } }
         end,
-        desc = "Show Diagnostics for current buffer"
+        desc = "LSP Show Diagnostics for current buffer",
       },
       {
         "l",
-        function ()
-          require("trouble").toggle( {mode = "diagnostics"} )
+        function()
+          require("trouble").toggle { mode = "diagnostics" }
         end,
-        desc = "Show Diagnostics"
+        desc = "LSP Show Diagnostics",
       },
       {
         "a",
-        function ()
+        function()
           require("telescope.builtin").diagnostics()
         end,
-        desc = "Show Diagnostics in Telescope"
-      }
+        desc = "LSP Show Diagnostics in Telescope",
+      },
     },
     {
       "s",
-      function ()
+      function()
         require("telescope.builtin").lsp_document_symbols()
       end,
-      desc = "List Document Symbols"
+      desc = "LSP List Document Symbols",
     },
     {
       "r",
-      function ()
-        require("nvchad.lsp.renamer")()
+      function()
+        require "nvchad.lsp.renamer"()
       end,
-      desc = "Rename Symbol"
-    }
-  }
-
+      desc = "LSP Rename Symbol",
+    },
+  },
 }
 
 -- return util.MapMany( defaults {
