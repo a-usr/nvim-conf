@@ -49,7 +49,7 @@ M.ui = {
             width = vim.api.nvim_win_get_width(win)
           end
         end
-        return "%#NvimTreeNormal#" .. string.rep(" ", width) .. "│"
+        return "%#NvimTreeNormal#" .. string.rep(" ", width) .. ((width > 0) and "│" or "")
       end,
     },
   },
