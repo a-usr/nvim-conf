@@ -23,38 +23,6 @@ return {
     },
     config = function(_, config)
       local persisted = require "persisted"
-
-      persisted.load = function(opts)
-        opts = opts or {}
-
-        local session
-
-        if opts.last then
-          session = persisted.last()
-        elseif opts.session then
-          session = opts.session
-        else
-          session = persisted.current()
-          if vim.fn.filereadable(session) == 0 then
-            session = persisted.current { branch = false }
-          end
-        end
-
-        if session and vim.fn.filereadable(session) ~= 0 then
-          vim.g.persisting_session = not config.follow_cwd and session or nil
-          vim.g.persisted_loaded_session = session
-          vim.cmd "%bd"
-          persisted.fire "LoadPre"
-          vim.cmd("silent! source " .. vim.fn.fnameescape(session))
-          persisted.fire "LoadPost"
-        elseif opts.autoload and type(config.on_autoload_no_session) == "function" then
-          config.on_autoload_no_session()
-        end
-
-        if config.autostart and persisted.allowed_dir() then
-          persisted.start()
-        end
-      end
       persisted.setup(config)
       require("telescope").load_extension "persisted"
     end,

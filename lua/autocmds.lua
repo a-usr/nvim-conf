@@ -1,4 +1,8 @@
-vim.api.nvim_create_autocmd("User", {
+local cmd = function(opts)
+  vim.api.nvim_create_autocmd("User", opts)
+end
+
+cmd {
   pattern = "PersistedSavePre",
   callback = function()
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -7,4 +11,18 @@ vim.api.nvim_create_autocmd("User", {
       end
     end
   end,
-})
+}
+
+cmd {
+  pattern = "PersistedLoadPre",
+  callback = function()
+    vim.cmd "silent! lua vim.api.nvim_del_augroup_by_name('NvdashAu')"
+    vim.cmd "tabnew|-tabc"
+  end,
+}
+-- cmd {
+--   pattern = "PersistedSavePost",
+--   callback = function ()
+--     vim.cmd "%bd|"
+--   end
+-- }

@@ -244,16 +244,20 @@ return require("mappings.util").Map {
     {
       "<leader>",
       {
-        "x",
-        function()
-          require("nvchad.tabufline").close_buffer()
-        end,
-        desc = "buffer close",
-      },
-      {
         "b",
-        "<cmd>enew<CR>",
-        desc = "buffer new",
+        group = "buffer",
+        {
+          "x",
+          function()
+            require("nvchad.tabufline").close_buffer()
+          end,
+          desc = "buffer close",
+        },
+        {
+          "b",
+          "<cmd>enew<CR>",
+          desc = "buffer new",
+        },
       },
     },
   },
