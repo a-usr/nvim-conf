@@ -257,4 +257,11 @@ return require("mappings.util").Map {
       },
     },
   },
+  {
+    "C-p",
+    function()
+      require("toolbox").show_picker()
+    end,
+    desc = "Show Command Pallete",
+  },
 }
