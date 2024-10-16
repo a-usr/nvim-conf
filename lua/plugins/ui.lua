@@ -32,7 +32,7 @@ return {
 
   {
     "tris203/precognition.nvim",
-    event = "VeryLazy",
+    event = "BufReadPost",
     opts = {
       startVisible = true,
       -- showBlankVirtLine = true,

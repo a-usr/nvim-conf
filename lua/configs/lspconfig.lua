@@ -4,15 +4,15 @@ require("nvchad.configs.lspconfig").defaults()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = { "html", "cssls", "omnisharp", "jdtls", "nil_ls"}
+local servers = { "html", "cssls", "omnisharp", "jdtls", "nil_ls" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
-local on_attach = function (_, bufnr)
-      nvlsp.on_attach(_, bufnr) -- TODO: REMOVE
+local on_attach = function(_, bufnr)
+  nvlsp.on_attach(_, bufnr) -- TODO: REMOVE
 
-      local mappings = require("mappings")
-       require("which-key").add(require("mappings.util").GetMapsOn("LSP attach", mappings))
-    end
+  local mappings = require "mappings"
+  require("which-key").add { require("mappings.util").GetMapsOn("LSP attach", mappings), buffer = bufnr }
+end
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -24,32 +24,32 @@ for _, lsp in ipairs(servers) do
 end
 
 require("lspconfig").lua_ls.setup {
-    on_attach = on_attach,
-    capabilities = nvlsp.capabilities,
-    on_init = nvlsp.on_init,
+  on_attach = on_attach,
+  capabilities = nvlsp.capabilities,
+  on_init = nvlsp.on_init,
 
-    settings = {
-      Lua = {
-        diagnostics = {
-          globals = { "vim" },
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
+      workspace = {
+        library = {
+          vim.fn.expand "$VIMRUNTIME/lua",
+          vim.fn.expand "$VIMRUNTIME/lua/vim/lsp",
+          vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types",
+          vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
+          "${3rd}/luv/library",
         },
-        workspace = {
-          library = {
-            vim.fn.expand "$VIMRUNTIME/lua",
-            vim.fn.expand "$VIMRUNTIME/lua/vim/lsp",
-            vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types",
-            vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
-            "${3rd}/luv/library",
-          },
-          maxPreload = 100000,
-          preloadFileSize = 10000,
-        },
+        maxPreload = 100000,
+        preloadFileSize = 10000,
       },
     },
-  }
+  },
+}
 
 lspconfig.jdtls.setup {
-  cmd = require("configs.os-dependend").lsp.jdtls.cmd
+  cmd = require("configs.os-dependend").lsp.jdtls.cmd,
 }
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
@@ -58,6 +58,7 @@ lspconfig.jdtls.setup {
 --   capabilities = nvlsp.capabilities,
 -- }
 lspconfig.omnisharp.setup {
+  on_attach = on_attach,
   cmd = { "omnisharp" },
   settings = {
     FormattingOptions = {
@@ -95,6 +96,6 @@ lspconfig.omnisharp.setup {
       -- Specifies whether to include preview versions of the .NET SDK when
       -- determining which version to use for project loading.
       IncludePrereleases = true,
-    }
-  }
+    },
+  },
 }
