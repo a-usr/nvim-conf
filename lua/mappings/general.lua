@@ -96,27 +96,27 @@ return require("mappings.util").Map {
         desc = "Toggle Comment",
       },
     },
-    --- Persistence ---
+    --- Persisted ---
     {
       "<TAB>",
       group = "Session",
       {
         "l",
         function()
-          require("persistence").select()
+          require("telescope").extensions.persisted.persisted()
         end,
         desc = "Load Session",
       },
       {
         "r",
         function()
-          require("persistence").load { last = true }
+          require("persisted").load { last = true }
         end,
         desc = "Restore Session",
       },
     },
   },
-  --- NeoTree ---
+  --- FileTree ---
   {
     {
       "<leader>e",
@@ -188,7 +188,24 @@ return require("mappings.util").Map {
       mode = "t",
     },
   },
-
+  --- Scroll ---
+  {
+    mode = { "i", "v", "n" },
+    {
+      "<C-UP>",
+      function()
+        require("neoscroll").scroll(-3, { duration = 2 })
+      end,
+      desc = "Scroll Up (Fast)",
+    },
+    {
+      "<C-DOWN>",
+      function()
+        require("neoscroll").scroll(3, { duration = 2 })
+      end,
+      desc = "Scroll Down (Fast)",
+    },
+  },
   {
     "<RightMouse>",
     function()

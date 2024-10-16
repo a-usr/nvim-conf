@@ -6,6 +6,13 @@ return util.Map {
   group = "LSP",
   {
     {
+      "t",
+      function()
+        require("lsp_lines").toggle()
+      end,
+      desc = "Toggle Lsp Lines",
+    },
+    {
       "d",
       group = "Diagnostics",
       {
@@ -32,17 +39,26 @@ return util.Map {
     },
     {
       "s",
-      function()
-        require("telescope.builtin").lsp_document_symbols()
-      end,
-      desc = "LSP List Document Symbols",
-    },
-    {
-      "r",
-      function()
-        require "nvchad.lsp.renamer"()
-      end,
-      desc = "LSP Rename Symbol",
+      group = "Symbol(s)",
+      {
+        "l",
+        function()
+          require("telescope.builtin").lsp_document_symbols()
+        end,
+        desc = "LSP List Document Symbols",
+      },
+      {
+        "r",
+        function()
+          require "nvchad.lsp.renamer"()
+        end,
+        desc = "LSP Rename Symbol",
+      },
+      {
+        "h",
+        vim.lsp.buf.signature_help,
+        desc = "LSP Show Signature Help",
+      },
     },
   },
 }
