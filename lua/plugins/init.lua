@@ -60,27 +60,6 @@ return {
     end,
   },
 
-  -- {
-  --   "Shatur/neovim-session-manager",
-  --   dependencies = { "nvim-telescope/telescope.nvim" },
-  --   cmd = "Sessionpersisted.nager",
-  --   keys = {
-  --     { "<leader><TAB>l", "<cmd>Sessionpersisted.nager load_session<cr>", desc = "SessionManager Load Session" },
-  --     {
-  --       "<leader><TAB>s",
-  --       "<cmd>Sessionpersisted.nager save_current_session<cr>",
-  --       desc = "Sessionpersisted.nager Save current Session",
-  --     },
-  --     { "<leader><TAB>r", "<cmd>Sessionpersisted.nager load_last_session<cr>", desc = "SessionManager Load last Session" },
-  --   },
-  --   config = function()
-  --     local config = require "session_manager.config"
-  --     require("session_manager").setup {
-  --       autoload_mode = config.Autoloadpersisted.de.Disabled,
-  --     }
-  --   end,
-  -- },
-
   {
     "folke/lazydev.nvim",
     ft = "lua", -- only load on lua files
