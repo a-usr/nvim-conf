@@ -24,6 +24,7 @@ return {
   },
 
   {
+    -- enabled = false,
     "Saghen/blink.cmp",
     event = "InsertEnter",
     -- optional: provides snippets for the snippet source
@@ -62,6 +63,11 @@ return {
       trigger = {
         completion = {
           blocked_trigger_characters = { " ", "\n", "\t", ",", "'", '"' },
+        },
+      },
+      fuzzy = {
+        prebuiltBinaries = {
+          download = require("configs.os-dependend").plugins.blink.download_fuzzy,
         },
       },
       -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'

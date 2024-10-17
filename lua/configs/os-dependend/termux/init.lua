@@ -9,5 +9,6 @@ M.lsp.jdtls.cmd = {
   "/data/data/com.termux/files/home/.cache/jdtls/workspace",
 }
 M.options.shell = "fish"
-
+M.plugins.neoscroll.enable = false
+-- M.plugins.blink.download_fuzzy = false
 return M
