@@ -20,9 +20,9 @@ cmd {
     vim.cmd "tabnew|-tabc"
   end,
 }
--- cmd {
---   pattern = "PersistedSavePost",
---   callback = function ()
---     vim.cmd "%bd|"
---   end
--- }
+cmd {
+  pattern = "PersistedSavePost",
+  callback = function()
+    vim.cmd "%bd|ea:q:"
+  end
+}
