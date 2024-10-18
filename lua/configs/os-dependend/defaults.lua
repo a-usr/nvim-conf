@@ -4,7 +4,10 @@ local M = {
       enable = true,
     },
     blink = {
-      download_fuzzy = true,
+      enable = true,
+    },
+    nvim_cmp = {
+      enable = false,
     },
   },
   options = {

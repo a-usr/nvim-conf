@@ -15,16 +15,18 @@ return {
     dependencies = {
       "neovim/nvim-lspconfig",
     },
+    event = "BufEnter",
     config = function()
       vim.diagnostic.config {
         virtual_text = false,
+        virtual_lines = false,
       }
       require("lsp_lines").setup()
     end,
   },
 
   {
-    -- enabled = false,
+    enabled = require("configs.os-dependend").plugins.blink.enable,
     "Saghen/blink.cmp",
     event = "InsertEnter",
     -- optional: provides snippets for the snippet source
@@ -67,7 +69,7 @@ return {
       },
       fuzzy = {
         prebuiltBinaries = {
-          download = require("configs.os-dependend").plugins.blink.download_fuzzy,
+          download = true,
         },
       },
       -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'

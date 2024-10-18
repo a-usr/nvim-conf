@@ -10,5 +10,6 @@ M.lsp.jdtls.cmd = {
 }
 M.options.shell = "fish"
 M.plugins.neoscroll.enable = false
--- M.plugins.blink.download_fuzzy = false
+M.plugins.blink.enable = false
+M.plugins.nvim_cmp.enable = true
 return M
