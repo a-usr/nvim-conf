@@ -43,8 +43,8 @@ return {
         show = "<S-Space>",
         hide = "<ESC>",
         accept = "<CR>",
-        select_prev = { "<S-Tab>", "<DOWN>" },
-        select_next = { "<Tab>", "<UP>" },
+        select_prev = { "<S-Tab>", "<UP>" },
+        select_next = { "<Tab>", "<DOWN>" },
 
         show_documentation = "<C-d>",
         hide_documentation = "<C-d>",
