@@ -61,10 +61,10 @@ return {
     },
   },
   {
-    'rcarriga/nvim-notify',
+    "rcarriga/nvim-notify",
     event = "VeryLazy",
     config = function()
-      vim.notify = require("notify")
-    end
-  }
+      vim.notify = require "notify"
+    end,
+  },
 } ---@type LazySpec
