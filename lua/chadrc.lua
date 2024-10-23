@@ -9,6 +9,12 @@ M.nvdash = {
   load_on_startup = true,
 }
 
+M.base46 = {
+  integrations = {
+    "semantic_tokens",
+  },
+}
+
 M.ui = {
   statusline = {
     order = { "mode", "file", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "cwd", "cursor" },
@@ -65,7 +71,7 @@ M.term = {
 }
 
 M.base46 = {
-  theme = "nord",
+  theme = "yoru",
   transparency = false,
 
   hl_override = {

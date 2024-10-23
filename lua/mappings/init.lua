@@ -15,6 +15,13 @@ for _, mappingloc in pairs(mappinglocs) do
 end
 require("which-key").add(require("mappings.util").GetMapsOnStartup(mappings))
 
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    -- print(vim.inspect(args))
+    require("which-key").add { require("mappings.util").GetMapsOn("LSP attach", mappings), buffer = args.buf }
+  end,
+})
+
 -- LSP mappings
 
 -- Diagnostics
