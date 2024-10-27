@@ -43,6 +43,7 @@ return {
   { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
 
   {
+    enabled = require("configs.os-dependend").plugins.neoscroll.enable,
     "karb94/neoscroll.nvim",
     event = "BufEnter",
     opts = {

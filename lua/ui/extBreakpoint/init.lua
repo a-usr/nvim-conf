@@ -28,7 +28,8 @@ local LogMessage = Input({
     print("Input Submitted: " .. value)
   end,
 })
-
+local HitsCountBuf = 0
+local HitsCountNoUpdate = 0
 local HitsCount = Input({
   position = "50%",
   size = {
@@ -52,6 +53,46 @@ local HitsCount = Input({
   end,
   on_submit = function(value)
     print("Input Submitted: " .. value)
+  end,
+  on_change = function(val)
+    if HitsCountNoUpdate > 0 then
+      HitsCountNoUpdate = HitsCountNoUpdate - 1
+      return
+    end
+    local i = 1
+    print(val)
+    local chars = ""
+    local cursorpos = vim.fn.getcurpos()
+    local cursoroffset = 0
+    for char in string.gmatch(val, ".") do
+      if string.gmatch(char, "[0-9]")() ~= char then
+        chars = chars .. char
+      else
+        if i <= cursorpos[3] - cursoroffset then
+          cursoroffset = cursoroffset + 1
+        end
+      end
+
+      i = i + 1
+    end
+    print(chars)
+    if string.len(val) ~= string.len(chars) then
+      local out = string.rep(
+        vim.api.nvim_replace_termcodes("<right>", true, true, true),
+        string.len(val) - cursorpos[3]
+      ) .. string.rep(vim.api.nvim_replace_termcodes("<BS>", true, false, true), string.len(val)) .. chars .. string.rep(
+        vim.api.nvim_replace_termcodes("<left>", true, true, true),
+        cursorpos[3] - cursoroffset
+      )
+
+      HitsCountNoUpdate = string.len(out)
+      vim.fn.feedkeys(out)
+      -- vim.fn.feedkeys(chars)
+
+      -- if cursoroffset ~= 0 then
+      --   vim.fn.cursor(cursorpos[2], cursorpos[3] - cursoroffset)
+      -- end
+    end
   end,
 })
 
@@ -92,7 +133,7 @@ local layout = Layout(
     },
     size = {
       width = 80,
-      height = "20%",
+      height = 8,
     },
   },
   Layout.Box({
@@ -100,8 +141,8 @@ local layout = Layout(
       -- Layout.Box(popup, { size = "40%" }),
       Layout.Box(Condition, { size = "50%" }),
       Layout.Box(HitsCount, { size = "50%" }),
-    }, { dir = "row", size = "30%" }),
-    Layout.Box(LogMessage, { size = "50%" }),
+    }, { dir = "row", size = 3 }),
+    Layout.Box(LogMessage, { size = "65%" }),
   }, { dir = "col" })
 )
 
@@ -109,28 +150,9 @@ require("ui.extBreakpoint.behaviour").set_mark()
 
 -- input:mount()
 layout:mount()
+HitsCountBuf = HitsCount.bufnr
 -- unmount component when cursor leaves buffer
 
 local components = { Condition, HitsCount, LogMessage }
 
-for i, component in pairs(components) do
-  component:map("i", "<esc>", function()
-    require("ui.extBreakpoint.behaviour").exit_ui(layout)
-  end)
-
-  component:map("i", "<Tab>", function()
-    local ind = i
-    if ind == #components then
-      ind = 0
-    end
-    vim.api.nvim_set_current_win(components[ind + 1].winid)
-  end)
-
-  component:map("i", "<S-Tab>", function()
-    local ind = i
-    if ind == 1 then
-      ind = #components + 1
-    end
-    vim.api.nvim_set_current_win(components[ind - 1].winid)
-  end)
-end
+require("ui.extBreakpoint.behaviour").bind(components, layout)
