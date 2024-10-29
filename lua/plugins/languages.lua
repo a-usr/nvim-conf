@@ -16,6 +16,7 @@ return {
 
   {
     "nvim-java/nvim-java",
+    enabled = require("configs.os-dependend").plugins.nvim_java.enable,
   },
   {
     "seblj/roslyn.nvim",

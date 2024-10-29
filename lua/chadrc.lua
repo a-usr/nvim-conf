@@ -69,9 +69,9 @@ M.term = {
     width = 0.70,
   },
 }
-
+local theme = require("local").theme
 M.base46 = {
-  theme = "yoru",
+  theme = theme,
   transparency = false,
 
   hl_override = {

@@ -9,6 +9,9 @@ local M = {
     nvim_cmp = {
       enable = false,
     },
+    nvim_java = {
+      enable = true,
+    },
   },
   options = {
     shell = "bash",

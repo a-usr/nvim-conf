@@ -1,5 +1,4 @@
 return {
-
   {
     "nvim-neo-tree/neo-tree.nvim",
     opts = {
@@ -66,5 +65,8 @@ return {
     config = function()
       vim.notify = require "notify"
     end,
+  },
+  {
+    "MunifTanjim/nui.nvim",
   },
 } ---@type LazySpec
