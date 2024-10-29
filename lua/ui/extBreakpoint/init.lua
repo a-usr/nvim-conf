@@ -3,6 +3,10 @@ local event = require("nui.utils.autocmd").event
 local Input = require "nui.input"
 local Layout = require "nui.layout"
 
+local LogMessageValue = ""
+local HitsCountValue = ""
+local ConditionValue = ""
+
 local LogMessage = Input({
   position = "50%",
   size = {
@@ -25,11 +29,13 @@ local LogMessage = Input({
     print "Input Closed!"
   end,
   on_submit = function(value)
-    print("Input Submitted: " .. value)
+    require("ui.extBreakpoint.behaviour").Accept(value, HitsCountValue, ConditionValue)
+  end,
+  on_change = function(value)
+    LogMessageValue = value
   end,
 })
-local HitsCountBuf = 0
-local HitsCountNoUpdate = 0
+
 local HitsCount = Input({
   position = "50%",
   size = {
@@ -52,46 +58,23 @@ local HitsCount = Input({
     print "Input Closed!"
   end,
   on_submit = function(value)
-    print("Input Submitted: " .. value)
+    require("ui.extBreakpoint.behaviour").Accept(LogMessageValue, value, ConditionValue)
   end,
+
   on_change = function(val)
-    if HitsCountNoUpdate > 0 then
-      HitsCountNoUpdate = HitsCountNoUpdate - 1
-      return
-    end
-    local i = 1
-    print(val)
     local chars = ""
-    local cursorpos = vim.fn.getcurpos()
-    local cursoroffset = 0
     for char in string.gmatch(val, ".") do
-      if string.gmatch(char, "[0-9]")() ~= char then
+      if string.gmatch(char, "[0-9]")() == char then
         chars = chars .. char
-      else
-        if i <= cursorpos[3] - cursoroffset then
-          cursoroffset = cursoroffset + 1
-        end
       end
-
-      i = i + 1
     end
-    print(chars)
+    HitsCountValue = chars
     if string.len(val) ~= string.len(chars) then
-      local out = string.rep(
-        vim.api.nvim_replace_termcodes("<right>", true, true, true),
-        string.len(val) - cursorpos[3]
-      ) .. string.rep(vim.api.nvim_replace_termcodes("<BS>", true, false, true), string.len(val)) .. chars .. string.rep(
-        vim.api.nvim_replace_termcodes("<left>", true, true, true),
-        cursorpos[3] - cursoroffset
-      )
-
-      HitsCountNoUpdate = string.len(out)
-      vim.fn.feedkeys(out)
-      -- vim.fn.feedkeys(chars)
-
-      -- if cursoroffset ~= 0 then
-      --   vim.fn.cursor(cursorpos[2], cursorpos[3] - cursoroffset)
-      -- end
+      vim.cmd "stopinsert"
+      vim.schedule(function()
+        vim.api.nvim_buf_set_lines(0, 0, 1, false, { chars })
+        vim.cmd "startinsert"
+      end)
     end
   end,
 })
@@ -118,7 +101,10 @@ local Condition = Input({
     print "Input Closed!"
   end,
   on_submit = function(value)
-    print("Input Submitted: " .. value)
+    require("ui.extBreakpoint.behaviour").Accept(LogMessageValue, HitsCountValue, value)
+  end,
+  on_change = function(value)
+    ConditionValue = value
   end,
 })
 
