@@ -100,14 +100,20 @@ return {
     dependencies = {
       {
         "nvim-java/nvim-java",
-        config = function()
-          require("java").setup()
-        end,
       },
     },
     config = function()
       require "configs.lspconfig"
     end,
+  },
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      registries = {
+        "github:nvim-java/mason-registry",
+        "github:mason-org/mason-registry",
+      },
+    },
   },
   {
     "stevearc/conform.nvim",

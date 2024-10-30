@@ -17,6 +17,9 @@ return {
   {
     "nvim-java/nvim-java",
     enabled = require("configs.os-dependend").plugins.nvim_java.enable,
+    config = function()
+      require("java").setup()
+    end,
   },
   {
     "seblj/roslyn.nvim",

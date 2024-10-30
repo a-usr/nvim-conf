@@ -67,6 +67,7 @@ return {
     end,
   },
   {
-    "MunifTanjim/nui.nvim",
+    "a-usr/nui.nvim",
+    name = "nui.nvim",
   },
 } ---@type LazySpec
