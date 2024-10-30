@@ -1,13 +1,21 @@
 return require("mappings.util").Map {
   {
-    "b",
-    group = "breakpoint",
+    "<leader>b",
+    -- group = "breakpoint", --Group shared with buffer binds (general.lua section tabufline)
     {
-      "p",
+      "b",
       function()
         require("dap").toggle_breakpoint()
       end,
       desc = "Breakpoint Toggle",
+    },
+    {
+      "e",
+      function()
+        require "precognition"
+        require "ui.extBreakpoint"()
+      end,
+      desc = "Set Advanced Breakpoint Options",
     },
   },
 }

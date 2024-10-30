@@ -33,6 +33,7 @@ require "options"
 require "nvchad.autocmds"
 require "autocmds"
 require "signs"
+require "highlights"
 
 vim.schedule(function()
   require "mappings"

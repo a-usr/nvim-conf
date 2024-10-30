@@ -58,6 +58,9 @@ PersistedAutoCmd {
 PersistedAutoCmd {
   pattern = "PersistedSavePost",
   callback = function()
+    if not vim.g.persisting then
+      return
+    end
     local sessionfile = io.open(vim.g.persisted_loaded_session, "r+")
     assert(sessionfile ~= nil)
     local sessionscript = sessionfile:read "a"

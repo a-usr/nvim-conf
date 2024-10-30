@@ -245,7 +245,7 @@ return require("mappings.util").Map {
       "<leader>",
       {
         "b",
-        group = "buffer",
+        group = "buffer/breakpoint", -- atm this group is also occupied by breakpoint binds declared in dap.lua
         {
           "x",
           function()
@@ -254,7 +254,7 @@ return require("mappings.util").Map {
           desc = "buffer close",
         },
         {
-          "b",
+          "n",
           "<cmd>enew<CR>",
           desc = "buffer new",
         },
