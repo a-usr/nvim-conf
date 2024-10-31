@@ -32,7 +32,7 @@ end
 local function normalize(proto, lead)
   if type(proto[1]) == "string" then -- Regular bind
     proto[1] = lead .. proto[1]
-  else -- group
+  else                               -- group
     for k, km in pairs(proto) do
       if type(k) == "number" then
         normalize(km, lead)
@@ -153,4 +153,5 @@ end
 function M.GetMapsOnStartup(maps)
   return M.GetMapsOn("startup", maps, false)
 end
+
 return M
