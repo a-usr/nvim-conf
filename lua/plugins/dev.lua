@@ -40,19 +40,16 @@ return {
     -- build = 'RUSTFLAGS="-C target-feature=-crt-static" cargo build --release',
     opts = {
       keymap = {
-        show = "<S-Space>",
-        hide = "<ESC>",
-        accept = "<CR>",
-        select_prev = { "<S-Tab>", "<UP>" },
-        select_next = { "<Tab>", "<DOWN>" },
-
-        show_documentation = "<C-d>",
-        hide_documentation = "<C-d>",
-        scroll_documentation_up = { "<C-b>", "<ScrollWheelUp>" },
-        scroll_documentation_down = { "<C-f>", "<ScrollWheelDown>" },
-
-        snippet_forward = "<Tab>",
-        snippet_backward = "<S-Tab>",
+        ["<C-Space>"] = { "show" },
+        ["<ESC>"] = { "hide", "fallback" },
+        ["<CR>"] = { "accept", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+        ["<UP>"] = { "select_prev", "snippet_backward", "fallback" },
+        ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+        ["<DOWN>"] = { "select_next", "snippet_forward", "fallback" },
+        ["<C-d>"] = { "show_documentation", "hide_documentation" },
+        -- scroll_documentation_up = { "<C-b>", "<ScrollWheelUp>" },
+        -- scroll_documentation_down = { "<C-f>", "<ScrollWheelDown>" },
       },
 
       highlight = {
@@ -91,9 +88,30 @@ return {
 
   {
     "mfussenegger/nvim-dap",
+    config = function()
+      local dap, dapui = require "dap", require "dapui"
+      dap.listeners.before.attach.dapui_config = function()
+        dapui.open()
+      end
+      dap.listeners.before.launch.dapui_config = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated.dapui_config = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited.dapui_config = function()
+        dapui.close()
+      end
+    end,
   },
 
-  { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    config = function(_, opts)
+      require("dapui").setup(opts)
+    end,
+  },
 
   {
     "neovim/nvim-lspconfig",
@@ -127,5 +145,25 @@ return {
       fast_wrap = {},
       disable_filetype = { "TelescopePrompt", "vim" },
     },
+  },
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "Issafalcon/neotest-dotnet",
+    },
+    config = function()
+      require("neotest").setup { ---@diagnostic disable-line:missing-fields
+        quickfix = { ---@diagnostic disable-line:missing-fields
+          enabled = true,
+        },
+        adapters = {
+          require "neotest-dotnet",
+        },
+      }
+    end,
   },
 }
