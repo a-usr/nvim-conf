@@ -15,8 +15,13 @@ return require("mappings.util").Map {
         {
           "e",
           function()
-            require "precognition"
-            require "ui.extBreakpoint" ()
+            local preTo
+            require("precognition").hide()
+            preTo = require("precognition").is_visible
+            require "ui.extBreakpoint"()
+            if preTo then
+              require("precognition").show()
+            end
           end,
           desc = "Set Advanced Breakpoint Options",
         },
@@ -29,7 +34,7 @@ return require("mappings.util").Map {
           function()
             require("dap").continue()
           end,
-          desc = "Continue Debugging / Start Session"
+          desc = "Continue Debugging / Start Session",
         },
         {
           "t",
@@ -43,16 +48,16 @@ return require("mappings.util").Map {
           function()
             require("dap").up()
           end,
-          desc = "walk the stack upwards"
+          desc = "walk the stack upwards",
         },
         {
           "d",
           function()
             require("dap").down()
           end,
-          desc = "walk the stack downwards"
-        }
-      }
+          desc = "walk the stack downwards",
+        },
+      },
     },
   },
   {
@@ -62,7 +67,7 @@ return require("mappings.util").Map {
       function()
         require("dap").step_into()
       end,
-      desc = "Step into"
+      desc = "Step into",
     },
     {
       "S>",
@@ -70,7 +75,6 @@ return require("mappings.util").Map {
         require("dap").step_over()
       end,
       desc = "Step over",
-
     },
     {
       "o>",
@@ -87,7 +91,6 @@ return require("mappings.util").Map {
       -- cond = function()
       --   return require("dap").session() and true or false
       -- end
-    }
-
-  }
+    },
+  },
 }

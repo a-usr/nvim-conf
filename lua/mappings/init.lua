@@ -7,6 +7,7 @@ local mappinglocs = {
   "general",
   "windows",
   "dap",
+  "dev",
 }
 
 local mappings = {} ---@type mapping.proto[]

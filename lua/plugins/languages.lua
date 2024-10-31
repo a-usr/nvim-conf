@@ -2,7 +2,7 @@ return {
   {
     "mrcjkb/rustaceanvim",
     version = "^5", -- Recommended
-    lazy = false,   -- This plugin is already lazy
+    lazy = false, -- This plugin is already lazy
   },
 
   {
@@ -58,5 +58,14 @@ return {
         },
       },
     },
+  },
+
+  {
+    "nicholasmata/nvim-dap-cs",
+    dependencies = { "mfussenegger/nvim-dap" },
+    ft = "cs",
+    config = function()
+      require("dap-cs").setup()
+    end,
   },
 }
