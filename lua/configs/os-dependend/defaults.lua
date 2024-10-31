@@ -13,6 +13,13 @@ local M = {
       enable = true,
     },
   },
+
+  dap = {
+
+    ---@type table<string, dap.Adapter|dap.Adapter|fun(callback: fun(adapter: dap.Adapter), config: dap.Configuration, parent?: dap.Session)>>
+    adapters = {},
+  },
+
   options = {
     shell = "bash",
   },
