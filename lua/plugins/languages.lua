@@ -2,7 +2,7 @@ return {
   {
     "mrcjkb/rustaceanvim",
     version = "^5", -- Recommended
-    lazy = false, -- This plugin is already lazy
+    lazy = false,   -- This plugin is already lazy
   },
 
   {
@@ -17,8 +17,14 @@ return {
   {
     "nvim-java/nvim-java",
     enabled = require("configs.os-dependend").plugins.nvim_java.enable,
-    config = function()
-      require("java").setup()
+    opts = {
+      jdk = {
+        -- install jdk using mason.nvim
+        auto_install = false,
+      },
+    },
+    config = function(_, opts)
+      require("java").setup(opts)
     end,
   },
   {
