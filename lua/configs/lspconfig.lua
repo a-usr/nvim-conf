@@ -6,7 +6,7 @@ vim.lsp.inlay_hint.enable()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = { "html", "cssls", "jdtls", "nil_ls" }
+local servers = { "html", "cssls", "nil_ls" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 local on_attach = function(_, bufnr)
@@ -47,9 +47,20 @@ require("lspconfig").lua_ls.setup {
   },
 }
 
-lspconfig.jdtls.setup {
-  cmd = require("configs.os-dependend").lsp.jdtls.cmd,
-}
+vim.api.nvim_create_autocmd("BufEnter",
+  {
+    pattern = "*.java",
+    callback = function()
+      require("java")
+      lspconfig.jdtls.setup {
+        on_attach = nvlsp.on_attach,
+        on_init = nvlsp.on_init,
+        capabilities = nvlsp.capabilities,
+        cmd = require("configs.os-dependend").lsp.jdtls.cmd,
+      }
+    end
+  })
+
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
 --   on_attach = nvlsp.on_attach,

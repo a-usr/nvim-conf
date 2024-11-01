@@ -1,15 +1,15 @@
-local dap, dapui = require "dap", require "dapui"
+local dap = require "dap"
 dap.listeners.before.attach.dapui_config = function()
-  dapui.open()
+  require("dapui").open()
 end
 dap.listeners.before.launch.dapui_config = function()
-  dapui.open()
+  require("dapui").open()
 end
 dap.listeners.before.event_terminated.dapui_config = function()
-  dapui.close()
+  require("dapui").close()
 end
 dap.listeners.before.event_exited.dapui_config = function()
-  dapui.close()
+  require("dapui").close()
 end
 
 ---@type table<string, dap.Adapter|dap.Adapter|fun(callback: fun(adapter: dap.Adapter), config: dap.Configuration, parent?: dap.Session)>>
