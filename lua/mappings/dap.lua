@@ -18,7 +18,7 @@ return require("mappings.util").Map {
             local preTo
             require("precognition").hide()
             preTo = require("precognition").is_visible
-            require "ui.extBreakpoint"()
+            require "ui.extBreakpoint" ()
             if preTo then
               require("precognition").show()
             end
