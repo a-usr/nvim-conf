@@ -132,6 +132,10 @@ return {
     },
   },
   {
+    "direnv/direnv.vim",
+    lazy = false,
+  },
+  {
     "nvim-neotest/neotest",
     dependencies = {
       "nvim-neotest/nvim-nio",
@@ -150,6 +154,7 @@ return {
           require "neotest-dotnet" {
             discovery_root = "solution",
           },
+          require "rustaceanvim.neotest",
         },
       }
     end,

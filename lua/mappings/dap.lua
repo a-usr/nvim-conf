@@ -28,7 +28,7 @@ return require("mappings.util").Map {
       },
       {
         "d",
-        group = "dap",
+        group = "Debug",
         {
           "c",
           function()
@@ -41,21 +41,21 @@ return require("mappings.util").Map {
           function()
             require("dap").terminate()
           end,
-          desc = "terminate session",
+          desc = "Terminate debug session",
         },
         {
           "u",
           function()
             require("dap").up()
           end,
-          desc = "walk the stack upwards",
+          desc = "Walk the stack upwards",
         },
         {
           "d",
           function()
             require("dap").down()
           end,
-          desc = "walk the stack downwards",
+          desc = "Walk the stack downwards",
         },
       },
     },
