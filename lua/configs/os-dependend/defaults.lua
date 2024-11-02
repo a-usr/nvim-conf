@@ -1,3 +1,4 @@
+---@module "dap"
 local M = {
   plugins = {
     neoscroll = {
@@ -11,6 +12,11 @@ local M = {
     },
     nvim_java = {
       enable = true,
+    },
+    markdown_preview = {
+      build = function()
+        vim.fn["mkdp#util#install"]()
+      end,
     },
   },
 

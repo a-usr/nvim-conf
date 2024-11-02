@@ -262,7 +262,7 @@ return require("mappings.util").Map {
     },
   },
   {
-    "C-p",
+    "<C-p>",
     function()
       require("toolbox").show_picker()
     end,

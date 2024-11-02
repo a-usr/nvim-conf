@@ -71,6 +71,7 @@ return {
     name = "nui.nvim",
   },
   {
+    -- enabled = false,
     "luukvbaal/statuscol.nvim",
     event = "BufEnter",
     config = function(_, opts)
@@ -79,15 +80,16 @@ return {
         --   -- configuration goes here, for example:
         --   -- relculright = true,
         segments = {
-          { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-          { sign = { name = { "Dap.*" } }, click = "v:lua.ScSa", auto = true },
+          { sign = { namespace = { "gitsigns_signs_.*" }, colwidth = 1, maxwidth = 2, auto = true } },
+          { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
+          { sign = { name = { "Dap.*" }, auto = true }, click = "v:lua.ScSa" },
           {
             sign = { namespace = { "diagnostic/signs" }, maxwidth = 2, auto = true },
             click = "v:lua.ScSa",
           },
-          { text = { builtin.lnumfunc }, click = "v:lua.ScLa" },
+          { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
           {
-            sign = { name = { ".*" }, maxwidth = 2, colwidth = 1, auto = true, wrap = true },
+            sign = { namespace = { ".*" }, name = { ".*" }, maxwidth = 2, colwidth = 1, auto = true, wrap = true },
             click = "v:lua.ScSa",
           },
         },
