@@ -103,8 +103,7 @@ return {
 
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
-    },
+    dependencies = {},
     config = function()
       require "configs.lspconfig"
     end,
@@ -132,6 +131,7 @@ return {
     },
   },
   {
+    enabled = require("configs.os-dependend").plugins.direnv.enable,
     "direnv/direnv.vim",
     lazy = false,
   },
