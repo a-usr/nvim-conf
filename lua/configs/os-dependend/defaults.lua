@@ -18,6 +18,9 @@ local M = {
         vim.fn["mkdp#util#install"]()
       end,
     },
+    direnv = {
+      enable = false,
+    },
   },
 
   dap = {
