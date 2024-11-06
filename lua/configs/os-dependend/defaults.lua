@@ -37,6 +37,9 @@ local M = {
       cmd = { "jdtls" },
     },
   },
+  custom = {
+    completionOpen = "<C-Space>",
+  },
 }
 M.__index = M
 return setmetatable({}, M)
