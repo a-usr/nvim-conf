@@ -40,7 +40,7 @@ return {
     -- build = 'RUSTFLAGS="-C target-feature=-crt-static" cargo build --release',
     opts = {
       keymap = {
-        ["<C-Space>"] = { "show" },
+        [require("configs.os-dependend").custom.completionOpen] = { "show" },
         ["<ESC>"] = { "hide", "fallback" },
         ["<CR>"] = { "accept", "fallback" },
         ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },

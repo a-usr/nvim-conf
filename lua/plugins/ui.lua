@@ -1,4 +1,13 @@
 return {
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      --refer to the configuration section below
+    },
+  },
   -- {
   --   "a-usr/nvchad_ui",
   --   name = "ui",
@@ -78,7 +87,7 @@ return {
     -- enabled = false,
     "luukvbaal/statuscol.nvim",
     event = "BufEnter",
-    config = function(_, opts)
+    config = function()
       local builtin = require "statuscol.builtin"
       require("statuscol").setup {
         --   -- configuration goes here, for example:
@@ -105,13 +114,43 @@ return {
     event = "VeryLazy",
     opts = {
       ---@module "edgy"
-      left = {}, ---@type (Edgy.View.Opts|string)[]
+      ---@type (Edgy.View.Opts|string)[]
+      left = {},
+      ---@type (Edgy.View.Opts|string)[]
       bottom = {
         -- {
         --   ft = "NvTerm_sp",
         --   size = { height = 0.4 },
         -- },
-        "trouble",
+        -- {
+        --   title = "Trouble QuickFix",
+        --   ft = "trouble",
+        --   pinned = true,
+        --   filter = function(buf)
+        --     for _, win in pairs(require("trouble.view").get { mode = "quickfix" }) do
+        --       if win.view.win.buf == buf then
+        --         return true
+        --       end
+        --     end
+        --     return false
+        --   end,
+        --   open = "Trouble quickfix open",
+        -- },
+        {
+          title = "Diagnostics",
+          size = { width = 50 },
+          ft = "trouble",
+          pinned = true,
+          filter = function(buf)
+            for _, win in pairs(require("trouble.view").get { mode = "diagnostics" }) do
+              if win.view.win.buf == buf then
+                return true
+              end
+            end
+            return false
+          end,
+          open = "Trouble diagnostics open win.position=bottom",
+        },
         { ft = "qf", title = "QuickFix" },
         {
           ft = "help",
@@ -121,9 +160,42 @@ return {
             return vim.bo[buf].buftype == "help"
           end,
         },
-      }, ---@type (Edgy.View.Opts|string)[]
-      right = {}, ---@type (Edgy.View.Opts|string)[]
-      top = {}, ---@type (Edgy.View.Opts|string)[]
+      },
+      ---@type (Edgy.View.Opts|string)[]
+      right = {
+        {
+          title = "Symbols",
+          size = { width = 50 },
+          ft = "trouble",
+          pinned = true,
+          filter = function(buf)
+            for _, win in pairs(require("trouble.view").get { mode = "symbols" }) do
+              if win.view.win.buf == buf then
+                return true
+              end
+            end
+            return false
+          end,
+          open = "Trouble symbols open",
+        },
+        {
+          title = "Trouble LSP",
+          size = { width = 50 },
+          ft = "trouble",
+          pinned = true,
+          -- filter = function(buf)
+          --   for _, win in pairs(require("trouble.view").get { mode = "lsp" }) do
+          --     if win.view.win.buf == buf then
+          --       return true
+          --     end
+          --   end
+          --   return false
+          -- end,
+          open = "Trouble lsp open",
+        },
+      },
+      ---@type (Edgy.View.Opts|string)[]
+      top = {},
 
       ---@type table<Edgy.Pos, {size:(integer | fun():integer), wo?:vim.wo}>
       options = {
@@ -136,7 +208,7 @@ return {
       animate = {
         enabled = true,
         fps = 100, -- frames per second
-        cps = 120, -- cells per second
+        cps = 1200, -- cells per second
         on_begin = function()
           vim.g.minianimate_disable = true
         end,
@@ -147,7 +219,7 @@ return {
         -- if you have noice.nvim installed, you can use any spinner from it, like:
         -- spinner = require("noice.util.spinners").spinners.circleFull,
         spinner = {
-          frames = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+          frames = { " ⠋", " ⠙", " ⠹", " ⠸", " ⠼", " ⠴", " ⠦", " ⠧", " ⠇", " ⠏" },
           interval = 80,
         },
       },
