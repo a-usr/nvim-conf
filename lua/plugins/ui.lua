@@ -2,6 +2,7 @@ return {
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+    event = "BufReadPost",
     opts = {
       -- your configuration comes here
       -- or leave it empty to use the default settings
@@ -85,7 +86,7 @@ return {
   },
   {
     -- enabled = false,
-    "luukvbaal/statuscol.nvim",
+    "a-usr/statuscol.nvim",
     event = "BufEnter",
     config = function()
       local builtin = require "statuscol.builtin"
@@ -94,17 +95,38 @@ return {
         --   -- relculright = true,
         segments = {
           { sign = { namespace = { "gitsigns_signs_.*" }, colwidth = 1, maxwidth = 2, auto = true } },
-          { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
-          { sign = { name = { "Dap.*" }, auto = true }, click = "v:lua.ScSa" },
+          { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+          {
+            sign = { name = { "todo%-sign%-.*" }, auto = true, maxwidth = 2 },
+            click = "v:lua.ScSa",
+          },
           {
             sign = { namespace = { "diagnostic/signs" }, maxwidth = 2, auto = true },
             click = "v:lua.ScSa",
           },
+          { sign = { name = { "Dap.*" }, auto = true }, click = "v:lua.ScSa" },
           { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
           {
             sign = { namespace = { ".*" }, name = { ".*" }, maxwidth = 2, colwidth = 1, auto = true, wrap = true },
             click = "v:lua.ScSa",
           },
+        },
+
+        clickhandlers = {
+          ---@param args (table): {
+          ---   minwid = minwid,            -- 1st argument to 'statuscolumn' %@ callback
+          ---   clicks = clicks,            -- 2nd argument to 'statuscolumn' %@ callback
+          ---   button = button,            -- 3rd argument to 'statuscolumn' %@ callback
+          ---   mods = mods,                -- 4th argument to 'statuscolumn' %@ callback
+          ---   mousepos = f.getmousepos()  -- getmousepos() table, containing clicked line number/window id etc.
+          --- }
+          ["todo%-sign%-.*"] = function(args)
+            print "a"
+            print(vim.inspect(args))
+            if args.button == "l" then
+              vim.cmd "Trouble todo"
+            end
+          end,
         },
       }
     end,
