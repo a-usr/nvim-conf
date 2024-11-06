@@ -1,5 +1,3 @@
---require "nvchad.mappings" --- TODO: remove
-
 -- add yours here
 
 local mappinglocs = {
