@@ -46,11 +46,13 @@ require("lspconfig").lua_ls.setup {
     },
   },
 }
-
+local javasetup = false
 vim.api.nvim_create_autocmd("BufEnter",
   {
     pattern = "*.java",
     callback = function()
+      if javasetup then return end
+      javasetup = true
       require("java")
       lspconfig.jdtls.setup {
         on_attach = nvlsp.on_attach,

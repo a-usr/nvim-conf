@@ -2,7 +2,7 @@ return {
   {
     "mrcjkb/rustaceanvim",
     version = "^5", -- Recommended
-    lazy = false, -- This plugin is already lazy
+    lazy = false,   -- This plugin is already lazy
   },
 
   {
@@ -32,6 +32,9 @@ return {
       jdk = {
         -- install jdk using mason.nvim
         auto_install = false,
+      },
+      spring_boot_tools = {
+        enable = false,
       },
     },
     config = function(_, opts)
