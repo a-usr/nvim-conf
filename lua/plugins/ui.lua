@@ -19,7 +19,7 @@ return {
       opts.hijack_netrw = true
       opts.disable_netrw = false
       return opts
-    end
+    end,
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -94,7 +94,7 @@ return {
   },
   {
     -- enabled = false,
-    "a-usr/statuscol.nvim",
+    "luukvbaal/statuscol.nvim",
     event = "BufEnter",
     config = function()
       local builtin = require "statuscol.builtin"
@@ -103,7 +103,10 @@ return {
         --   -- relculright = true,
         segments = {
           { sign = { namespace = { "gitsigns_signs_.*" }, colwidth = 1, maxwidth = 2, auto = true } },
-          { text = { builtin.foldfunc },                                                            click = "v:lua.ScFa" },
+          {
+            text = { builtin.foldfunc },
+            click = "v:lua.ScFa",
+          },
           {
             sign = { name = { "todo%-sign%-.*" }, auto = true, maxwidth = 2 },
             click = "v:lua.ScSa",
@@ -113,7 +116,7 @@ return {
             click = "v:lua.ScSa",
           },
           { sign = { name = { "Dap.*" }, auto = true }, click = "v:lua.ScSa" },
-          { text = { builtin.lnumfunc, " " },           click = "v:lua.ScLa" },
+          { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
           {
             sign = { namespace = { ".*" }, name = { ".*" }, maxwidth = 2, colwidth = 1, auto = true, wrap = true },
             click = "v:lua.ScSa",
@@ -237,7 +240,7 @@ return {
       -- edgebar animations
       animate = {
         enabled = true,
-        fps = 100,  -- frames per second
+        fps = 100, -- frames per second
         cps = 1200, -- cells per second
         on_begin = function()
           vim.g.minianimate_disable = true
