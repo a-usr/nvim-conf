@@ -2,7 +2,7 @@ return {
   {
     "mrcjkb/rustaceanvim",
     version = "^5", -- Recommended
-    lazy = false,   -- This plugin is already lazy
+    lazy = false, -- This plugin is already lazy
   },
 
   {
@@ -81,5 +81,12 @@ return {
     config = function()
       require("dap-cs").setup()
     end,
+  },
+  {
+    "Issafalcon/neotest-dotnet",
+  },
+  {
+
+    "nvim-neotest/neotest-python",
   },
 }

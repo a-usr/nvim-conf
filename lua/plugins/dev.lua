@@ -103,7 +103,9 @@ return {
 
   {
     "neovim/nvim-lspconfig",
-    dependencies = {},
+    dependencies = {
+      { "folke/neoconf.nvim" },
+    },
     config = function()
       require "configs.lspconfig"
     end,
@@ -142,21 +144,7 @@ return {
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "Issafalcon/neotest-dotnet",
     },
-    config = function()
-      require("neotest").setup { ---@diagnostic disable-line:missing-fields
-        quickfix = { ---@diagnostic disable-line:missing-fields
-          enabled = true,
-        },
-        log_level = 1,
-        adapters = {
-          require "neotest-dotnet" {
-            discovery_root = "solution",
-          },
-          require "rustaceanvim.neotest",
-        },
-      }
-    end,
+    config = require "configs.neotest",
   },
 }
