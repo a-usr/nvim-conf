@@ -70,3 +70,15 @@ PersistedAutoCmd {
     sessionfile:close()
   end,
 }
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_clients({ bufnr = args.buf })[1]
+    if client.server_capabilities.signatureHelpProvider then
+      require("lsp-overloads").setup(client, {})
+      -- vim.notify "lsp-overloads set up"
+    end
+    -- print(vim.inspect(args))
+    require("which-key").add { require("mappings.util").GetMapsOn("LSP attach", require "mappings"), buffer = args.buf }
+  end,
+})

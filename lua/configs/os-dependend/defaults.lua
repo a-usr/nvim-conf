@@ -31,6 +31,9 @@ local M = {
 
   options = {
     shell = "bash",
+    shellcmdflag = "-c",
+    shellxquote = "",
+    shellslash = true,
   },
   lsp = {
     jdtls = {
