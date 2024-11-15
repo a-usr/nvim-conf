@@ -337,4 +337,17 @@ return {
       fix_win_height = vim.fn.has "nvim-0.10.0" == 0,
     },
   },
+  {
+    "utilyre/barbecue.nvim",
+    name = "barbecue",
+    version = "*",
+    event = "BufReadPost",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    opts = {
+      -- configurations go here
+    },
+  },
 } ---@type LazySpec

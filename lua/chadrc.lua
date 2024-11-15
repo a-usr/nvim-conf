@@ -15,6 +15,9 @@ M.base46 = {
   },
 }
 
+M.lsp = {
+  signature = false,
+}
 M.ui = {
   statusline = {
     order = { "mode", "file", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "cwd", "cursor" },

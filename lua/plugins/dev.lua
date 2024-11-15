@@ -10,6 +10,9 @@ return {
       commands = require "tools",
     },
   },
+
+  { "Issafalcon/lsp-overloads.nvim", config = false },
+
   {
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     dependencies = {
