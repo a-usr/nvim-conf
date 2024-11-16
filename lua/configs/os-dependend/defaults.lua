@@ -33,7 +33,7 @@ local M = {
     shell = "bash",
     shellcmdflag = "-c",
     shellxquote = "",
-    shellslash = true,
+    shellslash = nil,
   },
   lsp = {
     jdtls = {
