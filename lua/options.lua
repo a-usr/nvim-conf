@@ -7,6 +7,8 @@ local o = vim.o
 o.shell = platform_options.shell
 o.shellcmdflag = platform_options.shellcmdflag
 o.shellxquote = platform_options.shellxquote
-o.shellslash = platform_options.shellslash
+if vim.fn.has "win32" ~= 0 then
+  o.shellslash = platform_options.shellslash
+end
 o.sessionoptions = "buffers,curdir,folds,winsize,terminal"
 o.foldcolumn = "auto:1"
