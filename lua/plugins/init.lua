@@ -25,10 +25,6 @@ return {
   -- These are some examples, uncomment them if you want to see them work!
   {
     "2kabhishek/nerdy.nvim",
-    dependencies = {
-      "stevearc/dressing.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
     cmd = "Nerdy",
   },
   {

@@ -81,6 +81,9 @@ return {
       "Tastyep/structlog.nvim", -- Optional, but highly recommended for debugging
     },
     config = function(_, opts)
+      if vim.fn.has "win32" then
+        vim.fn.set "noshellslash"
+      end
       require "mason" -- Mason setup must run before csharp, only if you want to use omnisharp
       require("csharp").setup(opts)
     end,
@@ -96,7 +99,7 @@ return {
           -- Settings that'll be passed to the omnisharp server
           enable_editor_config_support = true,
           organize_imports = true,
-          load_projects_on_demand = true,
+          load_projects_on_demand = false,
           enable_analyzers_support = true,
           enable_import_completion = true,
           include_prerelease_sdks = true,
@@ -105,6 +108,21 @@ return {
           -- Launches omnisharp in debug mode
           debug = false,
         },
+      },
+      logging = {
+        level = "DEBUG",
+      },
+      dap = {
+        adapter_name = "coreclr",
+      },
+    },
+    ft = "cs",
+  },
+  {
+    "a-usr/nvim-dap-cs",
+    opts = {
+      netcoredbg = {
+        path = "netcoredbg.exe",
       },
     },
     ft = "cs",

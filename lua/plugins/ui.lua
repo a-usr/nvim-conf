@@ -1,4 +1,12 @@
 return {
+  -- {
+  --   enabled = false,
+  --   "lewis6991/gitsigns.nvim",
+  -- },
+  {
+    "stevearc/dressing.nvim",
+    event = "VeryLazy",
+  },
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -44,11 +52,8 @@ return {
 
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-ui-select.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim" },
     cmd = "Telescope",
-    config = function()
-      require("telescope").load_extension "ui-select"
-    end,
   },
 
   {
@@ -338,6 +343,7 @@ return {
     },
   },
   {
+    -- enabled = false,
     "utilyre/barbecue.nvim",
     name = "barbecue",
     version = "*",

@@ -49,18 +49,19 @@ M.ui = {
     },
   },
   tabufline = {
-    order = { "neoTreeOffset", "treeOffset", "buffers", "tabs", "btns" },
-    modules = {
-      neoTreeOffset = function()
-        local width = 0
-        for _, win in pairs(vim.api.nvim_tabpage_list_wins(0)) do
-          if vim.bo[vim.api.nvim_win_get_buf(win)].ft == "neo-tree" then
-            width = vim.api.nvim_win_get_width(win)
-          end
-        end
-        return "%#NvimTreeNormal#" .. string.rep(" ", width) .. ((width > 0) and "│" or "")
-      end,
-    },
+    -- enabled = false,
+    -- order = { "neoTreeOffset", "treeOffset", "buffers", "tabs", "btns" },
+    -- modules = {
+    --   neoTreeOffset = function()
+    --     local width = 0
+    --     for _, win in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+    --       if vim.bo[vim.api.nvim_win_get_buf(win)].ft == "neo-tree" then
+    --         width = vim.api.nvim_win_get_width(win)
+    --       end
+    --     end
+    --     return "%#NvimTreeNormal#" .. string.rep(" ", width) .. ((width > 0) and "│" or "")
+    --   end,
+    -- },
   },
 }
 
