@@ -10,7 +10,7 @@ local servers = { "html", "cssls", "qmlls", "nixd", "jsonls" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 local on_attach = function(_, bufnr)
-  nvlsp.on_attach(_, bufnr) -- TODO: REMOVE
+  -- nvlsp.on_attach(_, bufnr) -- TODO: REMOVE
 end
 
 -- lsps with default config
@@ -22,30 +22,30 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-require("lspconfig").lua_ls.setup {
-  on_attach = on_attach,
-  capabilities = nvlsp.capabilities,
-  on_init = nvlsp.on_init,
-
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { "vim" },
-      },
-      workspace = {
-        library = {
-          vim.fn.expand "$VIMRUNTIME/lua",
-          vim.fn.expand "$VIMRUNTIME/lua/vim/lsp",
-          vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types",
-          vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
-          "${3rd}/luv/library",
-        },
-        maxPreload = 100000,
-        preloadFileSize = 10000,
-      },
-    },
-  },
-}
+-- require("lspconfig").lua_ls.setup {
+--   on_attach = on_attach,
+--   capabilities = nvlsp.capabilities,
+--   on_init = nvlsp.on_init,
+--
+--   settings = {
+--     Lua = {
+--       diagnostics = {
+--         globals = { "vim" },
+--       },
+--       workspace = {
+--         library = {
+--           vim.fn.expand "$VIMRUNTIME/lua",
+--           vim.fn.expand "$VIMRUNTIME/lua/vim/lsp",
+--           vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types",
+--           vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
+--           "${3rd}/luv/library",
+--         },
+--         maxPreload = 100000,
+--         preloadFileSize = 10000,
+--       },
+--     },
+--   },
+-- }
 local javasetup = false
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*.java",

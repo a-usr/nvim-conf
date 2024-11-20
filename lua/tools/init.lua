@@ -7,6 +7,16 @@ return {
     end,
     require_input = false,
   },
+  {
+    name = "Show Nerd Font Symbols",
+    execute = "Nerdy",
+    require_input = false,
+  },
+  {
+    name = "Open Lazy",
+    execute = "Lazy",
+    require_input = false,
+  },
 }
 
 ---@class toolbox.command
