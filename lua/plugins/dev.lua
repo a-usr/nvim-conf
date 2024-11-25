@@ -1,7 +1,26 @@
+---@module "trouble"
 return {
   {
     "folke/trouble.nvim",
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
+
+    ---@type trouble.Config
+    opts = {
+      modes = {
+        ---@type trouble.Mode
+        -- lsp_base = {
+        --   preview = {
+        --     type = "float",
+        --     relative = "editor",
+        --     border = "rounded",
+        --     title = "Preview",
+        --     title_pos = "center",
+        --     position = { 0, -2 },
+        --     size = { width = 0.3, height = 0.3 },
+        --     zindex = 200,
+        --   },
+        -- },
+      },
+    }, -- for default options, refer to the configuration section for custom setup.
     cmd = "Trouble",
   },
   {

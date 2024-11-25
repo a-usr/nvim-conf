@@ -6,13 +6,7 @@
 local M = {}
 
 M.nvdash = {
-  load_on_startup = true,
-}
-
-M.base46 = {
-  integrations = {
-    "semantic_tokens",
-  },
+  load_on_startup = false,
 }
 
 M.lsp = {
@@ -77,7 +71,9 @@ local theme = require("local").theme
 M.base46 = {
   theme = theme,
   transparency = false,
-
+  integrations = {
+    "semantic_tokens",
+  },
   hl_override = {
     NvDashAscii = { bg = "NONE", fg = "blue" },
     NvDashButtons = { bg = "NONE" },

@@ -1,5 +1,18 @@
 return {
   {
+    "folke/snacks.nvim",
+    opts = function()
+      ---@module "snacks"
+      ---@type snacks.Config
+      local opts = {}
+      opts.dashboard = require "configs.snackdash"
+
+      return opts
+    end,
+    lazy = false,
+  },
+
+  {
     "folke/neoconf.nvim",
     config = require "configs.neoconf",
   },
@@ -13,15 +26,18 @@ return {
     },
     config = true,
   },
-  -- {
-  --   "Ackeraa/todo.nvim",
-  --   cmd = "Todo",
-  --   opts = {
-  --     opts = {
-  --       file_path = "~/todo.txt",
-  --     },
-  --   },
-  -- },
+  {
+    "a-usr/todo.nvim",
+    cmd = "Todo",
+    opts = {
+      opts = {
+        file_path = "todo.txt",
+      },
+    },
+    config = function(_, opts)
+      require("todo").setup(opts)
+    end,
+  },
   -- These are some examples, uncomment them if you want to see them work!
   {
     "2kabhishek/nerdy.nvim",

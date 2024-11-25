@@ -1,6 +1,9 @@
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 
+-- use the experimental loader
+vim.loader.enable()
+
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
@@ -34,6 +37,8 @@ require "nvchad.autocmds"
 require "autocmds"
 require "signs"
 require "highlights"
+
+vim.env.EDITOR = "nvr --remote-wait-silent -l "
 
 vim.schedule(function()
   require "mappings"
