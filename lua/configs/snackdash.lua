@@ -1,6 +1,7 @@
 local a = require "plenary.async"
 local lazy_stats = require("lazy.stats").stats()
 local ms = (math.floor(lazy_stats.startuptime * 100 + 0.5) / 100)
+local dashboard = require "snacks.dashboard"
 
 local img = nil
 local imgloaded = false
@@ -26,30 +27,60 @@ local function GetDashImage()
     end
     return files
   end, function(files)
-    img = files[math.random(#files)]
-    imgloaded = true
+    if #files then
+      img = files[math.random(#files)]
+      imgloaded = true
+    else
+      imgloaded = "never"
+    end
   end)
-  local _img
-  if vim.fn.has "WIN32" then
-    img = vim.system {
-      "pwsh",
-      "-NoProfile",
-      "-NonInteractive",
-      "-c",
-      "ls " .. vim.fn.stdpath "data" .. "\\DashImgs | Get-Random | Select -ExpandProperty FullName | Write-Output",
-    }
-  else
-    _img = vim.system {
+end
+GetDashImage()
+function dashboard.sections.sixelimg()
+  local width = 60
+  local height = 25
+  return function(self)
+    while not imgloaded do
+      vim.uv.sleep(1)
+    end
+    local cmd
+    if imgloaded ~= "never" then
+      cmd = { "chafa", img, "--format", "sixels", "—-size", "60x25" }
+    else
+      cmd = {}
+    end
 
-      "bash",
-      "-c",
-      "ls " .. vim.fn.stdpath "data" .. "\\DashImgs | sort -R | tail -n 1 ",
+    local buf = vim.api.nvim_create_buf(false, true)
+    local function send(data)
+      vim.api.nvim_buf_set_lines(buf, 0, -1, false, data)
+    end
+    vim.fn.jobstart(cmd, {
+      height = height,
+      width = width,
+      pty = true,
+      on_stdout = function(_, data)
+        pcall(send, data)
+      end,
+    })
+    return {
+      render = function(_, pos)
+        local win = vim.api.nvim_open_win(buf, false, {
+          bufpos = { pos[1] - 1, pos[2] + 1 },
+          col = 0,
+          focusable = false,
+          height = height,
+          noautocmd = true,
+          relative = "win",
+          row = 0,
+          zindex = Snacks.config.styles.dashboard.zindex + 1,
+          style = "minimal",
+          width = width,
+          win = self.win,
+        })
+      end,
     }
   end
-
-  return string.gsub(_img:wait().stdout, "^%s*(.-)%s*$", "%1")
 end
-
 ---@type snacks.dashboard.Config
 local cfg = {
   preset = {
@@ -115,7 +146,7 @@ local cfg = {
       },
     },
     {
-      render = function(_, pos) end,
+      -- section = "sixelimg",
     },
     -- {
     --   section = "terminal",
