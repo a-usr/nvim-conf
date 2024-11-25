@@ -17,6 +17,11 @@ return {
     execute = "Lazy",
     require_input = false,
   },
+  {
+    name = "Todo List",
+    execute = "Todo",
+    require_input = false,
+  },
 }
 
 ---@class toolbox.command
