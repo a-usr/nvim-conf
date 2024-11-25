@@ -2,7 +2,21 @@ return {
   {
     "mrcjkb/rustaceanvim",
     version = "^5", -- Recommended
-    lazy = false, -- This plugin is already lazy
+    lazy = false,   -- This plugin is already lazy
+  },
+  {
+    "saecki/crates.nvim",
+    event = { "BufRead Cargo.toml" },
+    config = function()
+      require("crates").setup {
+        lsp = {
+          enabled = true,
+          actions = true,
+          -- completion = true,
+          hover = true,
+        },
+      }
+    end,
   },
 
   {
@@ -78,7 +92,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim", -- Required, automatically installs omnisharp
       "mfussenegger/nvim-dap",
-      "Tastyep/structlog.nvim", -- Optional, but highly recommended for debugging
+      "Tastyep/structlog.nvim",  -- Optional, but highly recommended for debugging
     },
     config = function(_, opts)
       if vim.fn.has "win32" then
