@@ -1,14 +1,14 @@
 local a = require "plenary.async"
+local asyncUtil = require "plenary.async.util"
 local lazy_stats = require("lazy.stats").stats()
 local ms = (math.floor(lazy_stats.startuptime * 100 + 0.5) / 100)
 local dashboard = require "snacks.dashboard"
 
-local img = nil
-local imgloaded = false
-local function GetDashImage()
-  ---@diagnostic disable-next-line
-  local path = string.gsub(vim.fn.stdpath "cache", "([^A-Z][^:])\\", "%1/") .. "/dashimgs"
-  a.run(function()
+local img, stat
+local path = string.gsub(vim.fn.stdpath "cache", "([^A-Z][^:])\\", "%1/") .. "/dashimgs"
+---@diagnostic disable-next-line
+a.run(
+  asyncUtil.protected(function()
     local dir = a.uv.fs_stat(path)
     if not (dir and dir.type == "directory") then
       a.uv.fs_mkdir(path, 755)
@@ -25,45 +25,51 @@ local function GetDashImage()
         table.insert(files, file.name)
       end
     end
-    return files
-  end, function(files)
-    if #files then
-      img = files[math.random(#files)]
-      imgloaded = true
+    if #files >= 1 then
+      local img = path .. "/" .. files[math.random(#files)]
+      return img
     else
-      imgloaded = "never"
+      return nil
     end
-  end)
-end
-GetDashImage()
+  end),
+  function(stat_, ...)
+    stat = stat_
+    img = ...
+  end
+)
+
 function dashboard.sections.sixelimg()
   local width = 60
   local height = 25
+  local useless = 0
   return function(self)
-    while not imgloaded do
-      vim.uv.sleep(1)
-    end
+    vim.wait(2000, function()
+      return stat ~= nil
+    end, 20, false)
     local cmd
-    if imgloaded ~= "never" then
-      cmd = { "chafa", img, "--format", "sixels", "—-size", "60x25" }
+    if stat then
+      cmd = {
+        "chafa",
+        img,
+        "--format",
+        "sixels",
+        "--size",
+        tostring(width) .. "x" .. tostring(height),
+        "--align",
+        "center",
+        "--view-size=" .. tostring(width) .. "x" .. tostring(height),
+      }
     else
+      Snacks.debug.log "async task failed or timed out"
       cmd = {}
     end
-
     local buf = vim.api.nvim_create_buf(false, true)
-    local function send(data)
-      vim.api.nvim_buf_set_lines(buf, 0, -1, false, data)
-    end
-    vim.fn.jobstart(cmd, {
-      height = height,
-      width = width,
-      pty = true,
-      on_stdout = function(_, data)
-        pcall(send, data)
-      end,
-    })
+    local pos = {}
+    local out = vim.system(cmd):wait().stdout
+    local augroup = vim.api.nvim_create_augroup("snacks.dashboard.sixelimg", {})
     return {
-      render = function(_, pos)
+      render = function(_, _pos)
+        pos = _pos
         local win = vim.api.nvim_open_win(buf, false, {
           bufpos = { pos[1] - 1, pos[2] + 1 },
           col = 0,
@@ -77,6 +83,44 @@ function dashboard.sections.sixelimg()
           width = width,
           win = self.win,
         })
+        local row, col = unpack(pos)
+        local function display()
+          vim.cmd "redraw!"
+          vim.cmd "redraw"
+          vim.schedule(function()
+            vim.cmd "redraw"
+            vim.cmd "redraw!"
+            vim.fn.chansend(
+              vim.v.stderr,
+              -- save cursor, move cursor to target, display sixel, restore cursor
+              "\27[s"
+                .. string.format("\27[%d;%dH", row, col + 2)
+                .. out
+                .. "\27[u"
+            )
+          end)
+        end
+        display()
+        vim.schedule(function()
+          vim.api.nvim_create_autocmd("WinScrolled", {
+            group = augroup,
+            pattern = "*",
+            callback = function()
+              vim.schedule(display)
+            end,
+          })
+        end)
+        local close = vim.schedule_wrap(function()
+          vim.api.nvim_clear_autocmds {
+            group = augroup,
+          }
+          pcall(vim.api.nvim_win_close, win, true)
+          pcall(vim.api.nvim_buf_delete, buf, { force = true })
+          return true
+        end)
+        self.on("UpdatePre", close)
+        self.on("Closed", close)
+        self:trace()
       end,
     }
   end
@@ -146,7 +190,7 @@ local cfg = {
       },
     },
     {
-      -- section = "sixelimg",
+      section = "sixelimg",
     },
     -- {
     --   section = "terminal",
