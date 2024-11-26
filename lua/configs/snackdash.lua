@@ -56,7 +56,7 @@ function dashboard.sections.sixelimg()
         "--size",
         tostring(width) .. "x" .. tostring(height),
         "--align",
-        "center",
+        "center,center",
         "--view-size=" .. tostring(width) .. "x" .. tostring(height),
       }
     else
@@ -65,7 +65,8 @@ function dashboard.sections.sixelimg()
     end
     local buf = vim.api.nvim_create_buf(false, true)
     local pos = {}
-    local out = vim.system(cmd):wait().stdout
+    local out, extrarow = vim.system(cmd):wait().stdout:gsub("\r?\n", "")
+    local out, extracol = out:gsub(" ", "")
     local augroup = vim.api.nvim_create_augroup("snacks.dashboard.sixelimg", {})
     return {
       render = function(_, _pos)
@@ -94,7 +95,7 @@ function dashboard.sections.sixelimg()
               vim.v.stderr,
               -- save cursor, move cursor to target, display sixel, restore cursor
               "\27[s"
-                .. string.format("\27[%d;%dH", row, col + 2)
+                .. string.format("\27[%d;%dH", row + (extrarow > 1 and extrarow or 0), col + extracol + 2)
                 .. out
                 .. "\27[u"
             )
@@ -116,6 +117,10 @@ function dashboard.sections.sixelimg()
           }
           pcall(vim.api.nvim_win_close, win, true)
           pcall(vim.api.nvim_buf_delete, buf, { force = true })
+          vim.wait(100, function()
+            vim.cmd "mode"
+            return false
+          end)
           return true
         end)
         self.on("UpdatePre", close)
