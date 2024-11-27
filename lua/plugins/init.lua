@@ -6,10 +6,14 @@ return {
       ---@type snacks.Config
       local opts = {}
       opts.dashboard = require "configs.snackdash"
+      opts.notifier = {
+        enabled = true,
+      }
 
       return opts
     end,
     lazy = false,
+    priority = 1000,
   },
 
   {

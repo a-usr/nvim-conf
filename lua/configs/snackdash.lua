@@ -4,69 +4,71 @@ local lazy_stats = require("lazy.stats").stats()
 local ms = (math.floor(lazy_stats.startuptime * 100 + 0.5) / 100)
 local dashboard = require "snacks.dashboard"
 
-local img, stat
+local imgdata, stat
 local path = string.gsub(vim.fn.stdpath "cache", "([^A-Z][^:])\\", "%1/") .. "/dashimgs"
 ---@diagnostic disable-next-line
-a.run(
-  asyncUtil.protected(function()
-    local dir = a.uv.fs_stat(path)
-    if not (dir and dir.type == "directory") then
-      a.uv.fs_mkdir(path, 755)
-    end
-
-    local files = {}
-    local dd, err = vim.loop.fs_opendir(path, nil, 99)
-    assert(not err, err)
-    local err, res = a.uv.fs_readdir(dd)
-    assert(not err, vim.inspect(err))
-
-    for _, file in pairs(res) do
-      if file.type == "file" then
-        table.insert(files, file.name)
-      end
-    end
-    if #files >= 1 then
-      local img = path .. "/" .. files[math.random(#files)]
-      return img
-    else
-      return nil
-    end
-  end),
-  function(stat_, ...)
-    stat = stat_
-    img = ...
-  end
-)
 
 function dashboard.sections.sixelimg()
   local width = 60
   local height = 25
-  local useless = 0
+  a.run(
+    asyncUtil.protected(function()
+      local dir = a.uv.fs_stat(path)
+      if not (dir and dir.type == "directory") then
+        a.uv.fs_mkdir(path, 755)
+      end
+
+      local files = {}
+      local dd, err = vim.loop.fs_opendir(path, nil, 99)
+      assert(not err, err)
+      local err, res = a.uv.fs_readdir(dd)
+      assert(not err, vim.inspect(err))
+
+      for _, file in pairs(res) do
+        if file.type == "file" then
+          table.insert(files, file.name)
+        end
+      end
+      if #files >= 1 then
+        local img = path .. "/" .. files[math.random(#files)]
+        local cmd = {
+          "chafa",
+          img,
+          "--format",
+          "sixels",
+          "--size",
+          tostring(width) .. "x" .. tostring(height),
+          "--align",
+          "center,center",
+          "--view-size=" .. tostring(width) .. "x" .. tostring(height),
+        }
+        local out, extrarow = a.wrap(vim.system, 2)(cmd).stdout:gsub("\r?\n", "")
+        local extracol
+        out, extracol = out:gsub(" ", "")
+        return { out, extrarow, extracol }
+      else
+        print "aaaa"
+        return { "", 0, 0 }
+      end
+    end),
+    function(stat_, ...)
+      stat = stat_
+      imgdata = ...
+    end
+  )
   return function(self)
     vim.wait(2000, function()
       return stat ~= nil
     end, 20, false)
-    local cmd
+    local out, extrarow, extracol
     if stat then
-      cmd = {
-        "chafa",
-        img,
-        "--format",
-        "sixels",
-        "--size",
-        tostring(width) .. "x" .. tostring(height),
-        "--align",
-        "center,center",
-        "--view-size=" .. tostring(width) .. "x" .. tostring(height),
-      }
+      out, extrarow, extracol = unpack(imgdata)
     else
       Snacks.debug.log "async task failed or timed out"
-      cmd = {}
+      out, extrarow, extracol = "", 0, 0
     end
     local buf = vim.api.nvim_create_buf(false, true)
     local pos = {}
-    local out, extrarow = vim.system(cmd):wait().stdout:gsub("\r?\n", "")
-    local out, extracol = out:gsub(" ", "")
     local augroup = vim.api.nvim_create_augroup("snacks.dashboard.sixelimg", {})
     return {
       render = function(_, _pos)

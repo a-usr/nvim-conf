@@ -99,6 +99,7 @@ return {
     },
   },
   {
+    enabled = false,
     "rcarriga/nvim-notify",
     event = "VeryLazy",
     config = function()
