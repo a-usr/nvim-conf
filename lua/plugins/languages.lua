@@ -2,7 +2,7 @@ return {
   {
     "mrcjkb/rustaceanvim",
     version = "^5", -- Recommended
-    lazy = false,   -- This plugin is already lazy
+    lazy = false, -- This plugin is already lazy
   },
   {
     "saecki/crates.nvim",
@@ -92,7 +92,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim", -- Required, automatically installs omnisharp
       "mfussenegger/nvim-dap",
-      "Tastyep/structlog.nvim",  -- Optional, but highly recommended for debugging
+      "Tastyep/structlog.nvim", -- Optional, but highly recommended for debugging
     },
     config = function(_, opts)
       if vim.fn.has "win32" then
@@ -147,5 +147,12 @@ return {
   {
 
     "nvim-neotest/neotest-python",
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
   },
 }
