@@ -67,7 +67,7 @@ M.term = {
     width = 0.70,
   },
 }
-local theme = require("local").theme
+local theme = "jabuti"
 M.base46 = {
   theme = theme,
   transparency = false,
