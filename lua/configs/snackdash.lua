@@ -87,11 +87,11 @@ function dashboard.sections.sixelimg()
         })
         local row, col = unpack(pos)
         local function display()
-          vim.cmd "redraw!"
+          -- vim.cmd "redraw!"
           vim.cmd "redraw"
           vim.schedule(function()
-            vim.cmd "redraw"
-            vim.cmd "redraw!"
+            -- vim.cmd "redraw"
+            -- vim.cmd "redraw!"
             vim.fn.chansend(
               vim.v.stderr,
               -- save cursor, move cursor to target, display sixel, restore cursor
