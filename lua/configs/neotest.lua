@@ -18,6 +18,10 @@ return function()
     adapters = {
       require "neotest-dotnet" {
         discovery_root = "solution",
+        dap = {
+          args = { justMyCode = false },
+          adapter_name = "coreclr",
+        },
       },
       require "neotest-python" {
         python = "python",
