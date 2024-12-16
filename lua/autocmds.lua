@@ -22,17 +22,17 @@ cmd("TabLeave", {
   end,
 })
 
-PersistedAutoCmd {
-  pattern = "PersistedLoadPre",
-  callback = function()
-    vim.cmd "silent! lua vim.api.nvim_del_augroup_by_name('NvdashAu')"
-    for _, buffer in pairs(vim.t.bufs or {}) do
-      vim.schedule(function()
-        vim.cmd("bd " .. tostring(buffer))
-      end)
-    end
-  end,
-}
+-- PersistedAutoCmd {
+--   pattern = "PersistedLoadPre",
+--   callback = function()
+--     vim.cmd "silent! lua vim.api.nvim_del_augroup_by_name('NvdashAu')"
+--     for _, buffer in pairs(vim.t.bufs or {}) do
+--       vim.schedule(function()
+--         vim.cmd("bd " .. tostring(buffer))
+--       end)
+--     end
+--   end,
+-- }
 
 PersistedAutoCmd {
   pattern = "PersistedLoadPost",
