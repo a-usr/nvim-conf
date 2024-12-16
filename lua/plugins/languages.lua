@@ -96,18 +96,22 @@ return {
     },
     config = function(_, opts)
       if vim.fn.has "win32" then
-        vim.fn.set "noshellslash"
+        vim.cmd.set "noshellslash"
       end
       require "mason" -- Mason setup must run before csharp, only if you want to use omnisharp
       require("csharp").setup(opts)
     end,
     opts = {
       lsp = {
+        roslyn = {
+          enable = true,
+          cmd_path = vim.fn.stdpath "data" .. "/roslyn/Microsoft.CodeAnalysis.LanguageServer.dll",
+        },
         -- Sets if you want to use omnisharp as your LSP
         omnisharp = {
           cmd_path = "omnisharp.cmd",
           -- When set to false, csharp.nvim won't launch omnisharp automatically.
-          enable = true,
+          enable = false,
           -- The default timeout when communicating with omnisharp
           default_timeout = 1000,
           -- Settings that'll be passed to the omnisharp server
@@ -120,7 +124,7 @@ return {
           -- analyze_open_documents_only = true,
           enable_package_auto_restore = true,
           -- Launches omnisharp in debug mode
-          debug = false,
+          -- debug = false,
         },
       },
       logging = {
