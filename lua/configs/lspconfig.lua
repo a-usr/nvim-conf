@@ -6,7 +6,7 @@ vim.lsp.inlay_hint.enable()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = { "html", "cssls", "qmlls", "nixd", "nil_ls", "jsonls", "ts_ls", "nushell" }
+local servers = { "html", "cssls", "qmlls", "nixd", "nil_ls", "jsonls", "ts_ls", "astro", "nushell" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 local on_attach = function(_, bufnr)
@@ -22,6 +22,15 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+lspconfig.ts_ls.setup {
+  cmd = { "fish", "-NP", "-c", "typescript-language-server --stdio" }
+}
+
+lspconfig.astro.setup {
+  cmd = {
+    "fish", "-NPc", "astro-ls --stdio"
+  }
+}
 -- require("lspconfig").lua_ls.setup {
 --   on_attach = on_attach,
 --   capabilities = nvlsp.capabilities,
