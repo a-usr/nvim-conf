@@ -9,6 +9,13 @@ return {
       opts.notifier = {
         enabled = true,
       }
+      opts.words = {
+        enabled = true,
+      }
+      opts.indent = {
+        enabled = true,
+      }
+      opts.dim = {}
 
       return opts
     end,

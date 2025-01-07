@@ -8,7 +8,8 @@ M.lsp.jdtls.cmd = {
   "-data",
   "/data/data/com.termux/files/home/.cache/jdtls/workspace",
 }
-M.options.shell = "fish"
+M.options.shell = "nu"
+M.options.shellredir = "out+err> %s"
 -- M.plugins.neoscroll.enable = false
 M.plugins.blink.enable = false
 M.plugins.nvim_cmp.enable = true
