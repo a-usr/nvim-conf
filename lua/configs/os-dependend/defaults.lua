@@ -34,6 +34,7 @@ local M = {
     shellcmdflag = "-c",
     shellxquote = "",
     shellslash = nil,
+    shellredir = "2>1 >%s",
   },
   lsp = {
     jdtls = {
