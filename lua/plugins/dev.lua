@@ -74,26 +74,40 @@ return {
         -- scroll_documentation_down = { "<C-f>", "<ScrollWheelDown>" },
       },
 
-      highlight = {
+      appearance = {
+        nerd_font_variant = "normal",
         -- sets the fallback highlight groups to nvim-cmp's highlight groups
         -- useful for when your theme doesn't support blink.cmp
         -- will be removed in a future release, assuming themes add support
         use_nvim_cmp_as_default = true,
       },
 
-      trigger = {
-        completion = {
-          blocked_trigger_characters = { " ", "\n", "\t", ",", "'", '"' },
+      completion = {
+        trigger = {
+          show_on_blocked_trigger_characters = function()
+            if vim.api.nvim_get_mode().mode == "c" then
+              return {}
+            end
+
+            -- you can also block per filetype, for example:
+            -- if vim.bo.filetype == 'markdown' then
+            --   return { ' ', '\n', '\t', '.', '/', '(', '[' }
+            -- end
+
+            return { "\n", "\t" }
+          end,
+
+          -- blocked_trigger_characters = { " ", "\n", "\t", ",", "'", '"' },
         },
       },
-      fuzzy = {
-        prebuiltBinaries = {
-          download = true,
-        },
-      },
+      -- fuzzy = {
+      --   prebuiltBinaries = {
+      --     download = true,
+      --   },
+      -- },
       -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
       -- adjusts spacing to ensure icons are aligned
-      nerd_font_variant = "normal",
+      -- nerd_font_variant = "normal",
 
       -- experimental auto-brackets support
       -- accept = { auto_brackets = { enabled = true } }
