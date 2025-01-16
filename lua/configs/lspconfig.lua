@@ -22,6 +22,10 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+lspconfig.html.setup {
+  cmd = require("configs.os-dependend").lsp.html.cmd
+}
+
 lspconfig.ts_ls.setup {
   cmd = { "fish", "-NP", "-c", "typescript-language-server --stdio" }
 }
