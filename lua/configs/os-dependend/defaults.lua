@@ -4,9 +4,9 @@ local M = {
     neoscroll = {
       enable = true,
     },
-    blink = {
-      enable = true,
-    },
+    -- blink = {  -- This was from when blink didnt work on termux
+    --   enable = true,
+    -- },
     nvim_cmp = {
       enable = false,
     },

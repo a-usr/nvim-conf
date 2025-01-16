@@ -18,6 +18,6 @@ M.lsp.html.cmd = {
   "--stdio"
 }
 -- M.plugins.neoscroll.enable = false
-M.plugins.blink.enable = false
+-- M.plugins.blink.enable = false
 M.plugins.nvim_cmp.enable = true
 return M

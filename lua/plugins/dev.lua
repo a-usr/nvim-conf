@@ -48,7 +48,7 @@ return {
   },
 
   {
-    enabled = require("configs.os-dependend").plugins.blink.enable,
+    -- enabled = require("configs.os-dependend").plugins.blink.enable,
     "Saghen/blink.cmp",
     event = "InsertEnter",
     -- optional: provides snippets for the snippet source
