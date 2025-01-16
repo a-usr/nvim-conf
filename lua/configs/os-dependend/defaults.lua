@@ -37,6 +37,9 @@ local M = {
     shellredir = "2>1 >%s",
   },
   lsp = {
+    html = {
+      cmd = { "vscode-html-language-server", "--stdio" },
+    },
     jdtls = {
       cmd = { "jdtls" },
     },
