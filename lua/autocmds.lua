@@ -92,7 +92,6 @@ UserAutoCmd {
       bufs[fname] = true
     end
 
-    -- Snacks.debug.log(bufs)
     -- get files to remove
     local obsoletefiles = {}
     for fname in session:gmatch "badd%s%+%d+%s([^%s]+)" do
@@ -100,13 +99,11 @@ UserAutoCmd {
         table.insert(obsoletefiles, fname)
       end
     end
-    -- Snacks.debug.log(obsoletefiles)
 
     for _, fname in ipairs(obsoletefiles) do
       session = session:gsub("badd%s%+%d+%s" .. esc(fname) .. "%s+", "")
     end
 
-    -- Snacks.debug.log(session)
 
     sessionfile:seek "set"
     sessionfile:write(session)
