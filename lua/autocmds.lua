@@ -24,7 +24,7 @@ UserAutoCmd {
   callback = function()
     for _, buffer in pairs(vim.t.bufs or {}) do
       vim.schedule(function()
-        vim.cmd("bd " .. tostring(buffer))
+        vim.cmd("silent! bd " .. tostring(buffer))
       end)
     end
   end,

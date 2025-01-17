@@ -28,40 +28,48 @@ return require("mappings.util").Map {
     --- Telescope ---
     {
       "f",
-      group = "telescope",
+      group = "Find",
+      icon = "find",
       {
         "f",
-        "<cmd>Telescope find_files<cr>",
-        desc = "telescope find files",
+        function()
+          Snacks.picker.files()
+        end,
+        desc = "Find files",
       },
       {
         "a",
-        "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
-        desc = "telescope find all files",
+        function()
+          Snacks.picker.files { hidden = true, ignored = true }
+        end,
+        desc = "Find all files",
       },
       {
         "w",
-        "<cmd>Telescope live_grep<CR>",
-        desc = "telescope live grep",
+        function()
+          Snacks.picker.grep()
+        end,
+        desc = "Live grep",
       },
       {
         "b",
-        "<cmd>Telescope buffers<CR>",
-        desc = "telescope find buffers",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "Find buffers",
       },
       {
         "h",
-        "<cmd>Telescope help_tags<CR>",
-        desc = "telescope help page",
-      },
-      {
-        "o",
-        "<cmd>Telescope oldfiles<CR>",
-        desc = "telescope find oldfiles",
+        function()
+          Snacks.picker.help()
+        end,
+        desc = "Help page",
       },
       {
         "z",
-        "<cmd>Telescope current_buffer_fuzzy_find<CR>",
+        function()
+          Snacks.picker.lines()
+        end,
         desc = "telescope find in current buffer",
       },
       {
@@ -103,7 +111,7 @@ return require("mappings.util").Map {
       {
         "l",
         function()
-          require("telescope").extensions.persisted.persisted()
+          require("snacks").picker.projects()
         end,
         desc = "Load Session",
       },

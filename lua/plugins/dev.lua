@@ -72,6 +72,18 @@ return {
         ["<C-d>"] = { "show_documentation", "hide_documentation" },
         -- scroll_documentation_up = { "<C-b>", "<ScrollWheelUp>" },
         -- scroll_documentation_down = { "<C-f>", "<ScrollWheelDown>" },
+        cmdline = {
+
+          ["<ESC>"] = {
+            function(cmp)
+              if cmp.is_visible() then
+                cmp.cancel()
+              else
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
+              end
+            end,
+          },
+        },
       },
 
       appearance = {
