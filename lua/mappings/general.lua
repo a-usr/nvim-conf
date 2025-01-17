@@ -111,7 +111,15 @@ return require("mappings.util").Map {
       {
         "l",
         function()
-          require("snacks").picker.projects()
+          -- require("snacks").picker.projects()
+          Snacks.picker.pick {
+            items = require("session_finder").find(),
+            format = require("session_finder").format,
+            confirm = function(picker, item)
+              picker:close()
+              require("persisted").load { session = item.session }
+            end,
+          }
         end,
         desc = "Load Session",
       },
