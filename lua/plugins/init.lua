@@ -17,6 +17,43 @@ return {
       }
       opts.dim = {}
 
+      opts.win = {}
+
+      opts.picker = {
+        layouts = {
+          default = {
+            layout = {
+              box = "horizontal",
+              width = 0.8,
+              min_width = 120,
+              height = 0.8,
+              {
+                box = "vertical",
+                border = "right",
+                title = "{source} {live}",
+                title_pos = "center",
+                { height = 1, border = "none", box = "horizontal" },
+                {
+                  height = 2,
+                  box = "horizontal",
+                  { box = "horizontal", width = 5, height = 0.2 },
+                  { win = "input", height = 2, border = "none" },
+                },
+                { win = "list", border = "none" },
+              },
+              { win = "preview", border = "none", width = 0.5 },
+            },
+          },
+        },
+        icons = {
+          indent = {
+            vertical = "  ",
+            middle = "  ",
+            last = "  ",
+          },
+        },
+      }
+
       return opts
     end,
     config = function(plug, opts)
