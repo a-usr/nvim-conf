@@ -19,6 +19,11 @@ return {
 
       return opts
     end,
+    config = function(plug, opts)
+      local snacks = require "snacks"
+      snacks.setup(opts)
+      vim.ui.select = snacks.picker.select
+    end,
     lazy = false,
     priority = 1000,
   },
@@ -74,11 +79,13 @@ return {
     opts = {
       -- add any custom options here
       use_git_branch = true,
+      ignored_dirs = {
+        "~",
+      },
     },
     config = function(_, config)
       local persisted = require "persisted"
       persisted.setup(config)
-      require("telescope").load_extension "persisted"
     end,
   },
 
