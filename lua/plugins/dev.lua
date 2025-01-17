@@ -73,7 +73,7 @@ return {
         -- scroll_documentation_up = { "<C-b>", "<ScrollWheelUp>" },
         -- scroll_documentation_down = { "<C-f>", "<ScrollWheelDown>" },
         cmdline = {
-
+          [require("configs.os-dependend").custom.completionOpen] = { "show" },
           ["<ESC>"] = {
             function(cmp)
               if cmp.is_visible() then
@@ -95,6 +95,18 @@ return {
       },
 
       completion = {
+        list = {
+          selection = {
+            preselect = function(ctx)
+              return ctx.mode ~= "cmdline"
+            end,
+          },
+        },
+        -- menu = {
+        --   auto_show = function(ctx)
+        --     return ctx.mode ~= "cmdline" or not vim.tbl_contains({ "/", "?" }, vim.fn.getcmdtype())
+        --   end,
+        -- },
         trigger = {
           show_on_blocked_trigger_characters = function()
             if vim.api.nvim_get_mode().mode == "c" then
