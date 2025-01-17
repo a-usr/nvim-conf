@@ -41,9 +41,9 @@ return util.Map {
         {
           "a",
           function()
-            require("telescope.builtin").diagnostics()
+            Snacks.picker.diagnostics()
           end,
-          desc = "LSP Show Diagnostics in Telescope",
+          desc = "LSP Show Diagnostics in Picker",
         },
       },
       {
@@ -52,7 +52,7 @@ return util.Map {
         {
           "l",
           function()
-            require("telescope.builtin").lsp_document_symbols()
+            Snacks.picker.lsp_symbols()
           end,
           desc = "LSP List Document Symbols",
         },
@@ -104,27 +104,3 @@ return util.Map {
     },
   },
 }
-
--- return util.MapMany( defaults {
---   {
---     "Show Diagnostics in Telescope",
---     L("ld"),
---     function ()
---       require("telescope.builtin").diagnostics()
---     end
---   },
---   {
---     "List Document Symbols",
---     L("ls"),
---     function ()
---       require("telescope.builtin").lsp_document_symbols()
---     end
---   },
---   {
---     "Rename Symbol",
---     L("lr"),
---     function ()
---       require("nvchad.lsp.renamer")()
---     end
---   }
--- })

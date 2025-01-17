@@ -1,5 +1,9 @@
 -- For the most part exactly the telescope finder from Persisted, but like, different
 
+vim.api.nvim_set_hl(0, "PersistedTelescopeSelected", { link = "SnacksPickerSelected", default = true })
+vim.api.nvim_set_hl(0, "PersistedTelescopeDir", { link = "Directory", default = true })
+vim.api.nvim_set_hl(0, "PersistedTelescopeBranch", { link = "SnacksPickerGitCommit", default = true })
+
 local function escape_pattern(str, pattern, replace, n)
   pattern = string.gsub(pattern, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
   replace = string.gsub(replace, "[%%]", "%%%%") -- escape replacement
@@ -47,12 +51,11 @@ function M.find()
 end
 
 function M.format(item)
-  local no_icons = {
-    selected = "",
-    dir = "",
-    branch = "",
+  local icons = {
+    selected = "->",
+    dir = "  ",
+    branch = " ",
   }
-  local icons = vim.tbl_extend("force", no_icons, require("persisted.config").telescope.icons or {})
 
   local final = {}
 

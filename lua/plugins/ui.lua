@@ -17,6 +17,11 @@ return {
   },
   {
     "stevearc/dressing.nvim",
+    opts = {
+      select = {
+        enabled = false,
+      },
+    },
     event = "VeryLazy",
   },
   {
@@ -60,12 +65,6 @@ return {
         group_index = 0, -- set group index to 0 to skip loading LuaLS completions
       })
     end,
-  },
-
-  {
-    "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    cmd = "Telescope",
   },
 
   {

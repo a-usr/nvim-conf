@@ -25,7 +25,7 @@ return require("mappings.util").Map {
       end,
       desc = "General Format file",
     },
-    --- Telescope ---
+    --- Picker ---
     {
       "f",
       group = "Find",
@@ -70,20 +70,24 @@ return require("mappings.util").Map {
         function()
           Snacks.picker.lines()
         end,
-        desc = "telescope find in current buffer",
+        desc = "search in current buffer",
       },
       {
         "g",
         group = "git",
         {
           "c",
-          "<cmd>Telescope git_commits<CR>",
-          desc = "telescope git commits",
+          function()
+            Snacks.picker.git_log()
+          end,
+          desc = "git Log",
         },
         {
           "s",
-          "<cmd>Telescope git_status<CR>",
-          desc = "telescope git status",
+          function()
+            Snacks.picker.git_status()
+          end,
+          desc = "git Status",
         },
       },
     },
