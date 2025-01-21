@@ -35,12 +35,14 @@ UserAutoCmd {
   callback = function()
     vim.t.persisted_loaded_session = vim.g.persisted_loaded_session
     vim.t.persisting_session = vim.g.persisting_session
+    vim.t.persisting = vim.g.persisting
   end,
 }
 
 UserAutoCmd {
   pattern = "PersistedSavePre",
   callback = function()
+    vim.g.persisting = vim.t.persisting
     vim.g.persisting_session = vim.t.persisting_session or vim.g.persisting_session
     vim.g.persisted_loaded_session = vim.t.persisted_loaded_session or vim.g.persisted_loaded_session
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
