@@ -55,6 +55,9 @@ return {
   {
     "a-usr/base46",
     name = "base46",
+    build = function()
+      require("base46").load_all_highlights()
+    end,
   },
   { -- optional completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
