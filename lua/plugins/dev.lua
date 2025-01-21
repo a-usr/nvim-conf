@@ -65,9 +65,9 @@ return {
         [require("configs.os-dependend").custom.completionOpen] = { "show" },
         ["<ESC>"] = { "hide", "fallback" },
         ["<CR>"] = { "accept", "fallback" },
+        ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
         ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
         ["<UP>"] = { "select_prev", "snippet_backward", "fallback" },
-        ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
         ["<DOWN>"] = { "select_next", "snippet_forward", "fallback" },
         ["<C-d>"] = { "show_documentation", "hide_documentation" },
         -- scroll_documentation_up = { "<C-b>", "<ScrollWheelUp>" },
@@ -83,6 +83,8 @@ return {
               end
             end,
           },
+          ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+          ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
         },
       },
 
