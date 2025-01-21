@@ -284,7 +284,10 @@ return require("mappings.util").Map {
   {
     "<C-p>",
     function()
+      local ui_select = vim.ui.select
+      vim.ui.select = require("vscodeselect").select
       require("toolbox").show_picker()
+      vim.ui.select = ui_select
     end,
     desc = "Show Command Pallete",
   },
