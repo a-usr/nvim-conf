@@ -29,7 +29,7 @@ return require("mappings.util").Map {
     {
       "f",
       group = "Find",
-      icon = "find",
+      icon = " ",
       {
         "f",
         function()

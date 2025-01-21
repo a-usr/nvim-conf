@@ -3,6 +3,8 @@ return {
   {
     "folke/trouble.nvim",
 
+    cond = not vim.g.vscode,
+
     ---@type trouble.Config
     opts = {
       modes = {
@@ -51,6 +53,7 @@ return {
     -- enabled = require("configs.os-dependend").plugins.blink.enable,
     "Saghen/blink.cmp",
     event = "InsertEnter",
+    cond = not vim.g.vscode,
     -- optional: provides snippets for the snippet source
     dependencies = "rafamadriz/friendly-snippets",
 
