@@ -114,10 +114,17 @@ return {
     dependencies = { "nvim-telescope/telescope.nvim" },
     event = "BufReadPre", -- this will only start session saving when an actual file was opened
     opts = {
+      autostart = true, -- Automatically start the plugin on load?
+
+      -- Function to determine if a session should be saved
+      ---@type fun(): boolean
+      should_save = function()
+        return true
+      end,
       -- add any custom options here
       use_git_branch = true,
       ignored_dirs = {
-        "~",
+        { "~", exact = true },
       },
     },
     config = function(_, config)
