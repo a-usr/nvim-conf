@@ -8,14 +8,12 @@ M.lsp.jdtls.cmd = {
   "-data",
   "/data/data/com.termux/files/home/.cache/jdtls/workspace",
 }
-M.options.shell = "nu"
-M.options.shellredir = "out+err> %s"
-
+M.options.shell = "nushell"
 M.lsp.html.cmd = {
   "node",
   "/data/data/com.termux/files/home/.local/share/nvim/mason/packages/html-lsp/node_modules/.bin/vscode-html-language-server",
   "--",
-  "--stdio"
+  "--stdio",
 }
 -- M.plugins.neoscroll.enable = false
 -- M.plugins.blink.enable = false
