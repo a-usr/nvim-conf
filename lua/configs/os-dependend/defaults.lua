@@ -31,10 +31,6 @@ local M = {
 
   options = {
     shell = "bash",
-    shellcmdflag = "-c",
-    shellxquote = "",
-    shellslash = nil,
-    shellredir = "2>1 >%s",
   },
   lsp = {
     html = {
