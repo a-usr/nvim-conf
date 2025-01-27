@@ -52,13 +52,6 @@ return {
       source_selector = { winbar = true },
     },
   },
-  {
-    "a-usr/base46",
-    name = "base46",
-    build = function()
-      require("base46").load_all_highlights()
-    end,
-  },
   { -- optional completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
@@ -99,14 +92,6 @@ return {
       --     "startify",
       -- },
     },
-  },
-  {
-    enabled = false,
-    "rcarriga/nvim-notify",
-    event = "VeryLazy",
-    config = function()
-      vim.notify = require "notify"
-    end,
   },
   {
     "a-usr/nui.nvim",
@@ -172,6 +157,15 @@ return {
         left = {},
         ---@type (Edgy.View.Opts|string)[]
         bottom = {
+          {
+            ft = "toggleterm",
+            size = { height = 0.4 },
+            -- dont exclude floating windows :)
+            filter = function(buf, win)
+              local wincfg = vim.api.nvim_win_get_config(win)
+              return wincfg.relative ~= "" or wincfg.split == "below"
+            end,
+          },
           -- {
           --   ft = "NvTerm_sp",
           --   size = { height = 0.4 },
@@ -180,6 +174,14 @@ return {
           { ft = "qf", title = "QuickFix" },
           {
             ft = "help",
+            size = { height = 20 },
+            -- only show help buffers
+            filter = function(buf)
+              return vim.bo[buf].buftype == "help"
+            end,
+          },
+          {
+            ft = "markdown", -- that exists, if it bothers you complain to lspconfig
             size = { height = 20 },
             -- only show help buffers
             filter = function(buf)
@@ -218,7 +220,7 @@ return {
           },
         },
         -- enable this to exit Neovim when only edgy windows are left
-        exit_when_last = false,
+        exit_when_last = true,
         -- close edgy when all windows are hidden instead of opening one of them
         -- disable to always keep at least one edgy split visible in each open section
         close_when_all_hidden = true,
@@ -268,26 +270,26 @@ return {
           ["[W"] = function(win)
             win:prev { pinned = false, focus = true }
           end,
-          -- -- increase width
-          -- ["<M-w>"] = function(win)
-          --   win:resize("width", 2)
-          -- end,
-          -- -- decrease width
-          -- ["<M-W>"] = function(win)
-          --   win:resize("width", -2)
-          -- end,
-          -- -- increase height
-          -- ["<M-h>"] = function(win)
-          --   win:resize("height", 2)
-          -- end,
-          -- -- decrease height
-          -- ["<M-H>-"] = function(win)
-          --   win:resize("height", -2)
-          -- end,
-          -- -- reset all custom sizing
-          -- ["<c-w>="] = function(win)
-          --   win.view.edgebar:equalize()
-          -- end,
+          -- increase width
+          ["<c-w>>"] = function(win)
+            win:resize("width", 2)
+          end,
+          -- decrease width
+          ["<c-w><lt>"] = function(win)
+            win:resize("width", -2)
+          end,
+          -- increase height
+          ["<c-w>+"] = function(win)
+            win:resize("height", 2)
+          end,
+          -- decrease height
+          ["<c-w>-"] = function(win)
+            win:resize("height", -2)
+          end,
+          -- reset all custom sizing
+          ["<c-w>="] = function(win)
+            win.view.edgebar:equalize()
+          end,
         },
         icons = {
           closed = "  ",

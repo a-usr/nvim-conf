@@ -6,12 +6,10 @@ vim.lsp.inlay_hint.enable()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = { "html", "cssls", "qmlls", "nixd", "nil_ls", "jsonls", "ts_ls", "astro", "nushell" }
+local servers = { "html", "cssls", "qmlls", "nixd", "nil_ls", "jsonls", "ts_ls", "astro", "nushell", "pylsp" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
-local on_attach = function(_, bufnr)
-  -- nvlsp.on_attach(_, bufnr) -- TODO: REMOVE
-end
+local on_attach = function(_, bufnr) end -- Keep this just in case I need it in the future
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -23,18 +21,21 @@ for _, lsp in ipairs(servers) do
 end
 
 lspconfig.html.setup {
-  cmd = require("configs.os-dependend").lsp.html.cmd
+  cmd = require("configs.os-dependend").lsp.html.cmd,
 }
+--
+-- lspconfig.ts_ls.setup {
+--   cmd = { "fish", "-NP", "-c", "typescript-language-server --stdio" },
+-- }
+--
+-- lspconfig.astro.setup {
+--   cmd = {
+--     "",
+--     "-NPc",
+--     "astro-ls --stdio",
+--   },
+-- }
 
-lspconfig.ts_ls.setup {
-  cmd = { "fish", "-NP", "-c", "typescript-language-server --stdio" }
-}
-
-lspconfig.astro.setup {
-  cmd = {
-    "fish", "-NPc", "astro-ls --stdio"
-  }
-}
 -- require("lspconfig").lua_ls.setup {
 --   on_attach = on_attach,
 --   capabilities = nvlsp.capabilities,

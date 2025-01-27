@@ -11,3 +11,4 @@ if vim.fn.has "win32" ~= 0 then
 end
 o.sessionoptions = "buffers,curdir,folds,winsize,terminal"
 o.foldcolumn = "auto:1"
+o.splitkeep = "screen"
