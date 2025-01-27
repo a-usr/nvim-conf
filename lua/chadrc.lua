@@ -67,7 +67,7 @@ M.term = {
     width = 0.70,
   },
 }
-local theme = "kanagawa"
+local theme = "everforest"
 M.base46 = {
   theme = theme,
   transparency = false,

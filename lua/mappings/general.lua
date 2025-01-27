@@ -179,26 +179,28 @@ return require("mappings.util").Map {
   {
     {
       mode = { "n", "t" },
-      {
-        "<A-v>",
-        function()
-          require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm" }
-        end,
-        desc = "terminal toggleable vertical term",
-      },
-      {
-        "<A-h>",
-        function()
-          require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm" }
-        end,
-        desc = "terminal toggleable horizontal term",
-      },
+
       {
         "<A-i>",
         function()
           require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
         end,
         desc = "terminal toggle floating term",
+      },
+      --- Toggle edgy ---
+      {
+        "<A-v>",
+        function()
+          require("edgy").toggle "right"
+        end,
+        desc = "window toggleable vertical bar",
+      },
+      {
+        "<A-h>",
+        function()
+          require("edgy").toggle "bottom"
+        end,
+        desc = "window toggleable horizontal bar",
       },
     },
     {
