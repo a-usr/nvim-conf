@@ -6,7 +6,7 @@ vim.lsp.inlay_hint.enable()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = { "html", "cssls", "qmlls", "nixd", "nil_ls", "jsonls", "ts_ls", "astro", "nushell", "pylsp" }
+local servers = { "html", "cssls", "qmlls", "nixd", "nil_ls", "jsonls", "ts_ls", "astro", "nushell", "pylsp", "svelte" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 local on_attach = function(_, bufnr) end -- Keep this just in case I need it in the future
