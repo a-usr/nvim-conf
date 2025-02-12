@@ -75,22 +75,22 @@ UserAutoCmd {
       bufs[fname] = true
     end
 
-    Snacks.debug.log(bufs)
+    -- Snacks.debug.log(bufs)
     -- get files to remove
     local obsoletefiles = {}
     for fname in session:gmatch "badd%s%+%d+%s([^%s]+)" do
-      Snacks.debug.log(fname)
+      -- Snacks.debug.log(fname)
       if bufs[fname] ~= true then
         table.insert(obsoletefiles, fname)
       end
     end
-    Snacks.debug.log(obsoletefiles)
+    -- Snacks.debug.log(obsoletefiles)
 
     for _, fname in ipairs(obsoletefiles) do
       session = session:gsub("badd%s%+%d+%s" .. fname .. "%s+", "")
     end
 
-    Snacks.debug.log(session)
+    -- Snacks.debug.log(session)
 
     sessionfile:seek "set"
     sessionfile:write(session)
@@ -104,7 +104,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local client = vim.lsp.get_clients({ bufnr = args.buf })[1]
     if client.server_capabilities.signatureHelpProvider then
       require("lsp-overloads").setup(client, {})
-      -- vim.notify "lsp-overloads set up"
+      vim.notify "lsp-overloads set up"
     end
     -- print(vim.inspect(args))
     require("which-key").add { require("mappings.util").GetMapsOn("LSP attach", require "mappings"), buffer = args.buf }
