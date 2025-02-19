@@ -56,7 +56,7 @@ return {
     end,
   },
   {
-    "seblj/roslyn.nvim",
+    "seblyng/roslyn.nvim",
     ft = { "cs", "csx" },
     opts = {
 

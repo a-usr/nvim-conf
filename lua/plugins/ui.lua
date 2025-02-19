@@ -1,8 +1,8 @@
 return {
-  -- {
-  --   enabled = false,
-  --   "lewis6991/gitsigns.nvim",
-  -- },
+  {
+    "OXY2DEV/helpview.nvim",
+    lazy = false,
+  },
   {
     "akinsho/git-conflict.nvim",
     event = "FileReadPost",

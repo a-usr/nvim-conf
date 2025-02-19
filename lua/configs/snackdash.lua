@@ -8,7 +8,7 @@ local imgdata, stat
 local path = string.gsub(vim.fn.stdpath "cache", "([^A-Z][^:])\\", "%1/") .. "/dashimgs"
 ---@diagnostic disable-next-line
 
-function dashboard.sections.sixelimg()
+function dashboard.sections.img()
   local width = 60
   local height = 25
   a.run(
@@ -35,7 +35,7 @@ function dashboard.sections.sixelimg()
           "chafa",
           img,
           "--format",
-          "sixels",
+          "kitty",
           "--size=" .. tostring(width) .. "x" .. tostring(height),
           "--align",
           "center,center",
@@ -46,7 +46,6 @@ function dashboard.sections.sixelimg()
         out, extracol = out:gsub(" ", "")
         return { out, extrarow, extracol }
       else
-        print "aaaa"
         return { "", 0, 0 }
       end
     end),
@@ -56,7 +55,7 @@ function dashboard.sections.sixelimg()
     end
   )
   return function(self)
-    vim.wait(2000, function()
+    vim.wait(1000, function()
       return stat ~= nil
     end, 20, false)
     local out, extrarow, extracol
@@ -89,17 +88,15 @@ function dashboard.sections.sixelimg()
         local function display()
           -- vim.cmd "mode"
           vim.cmd "redraw"
-          vim.schedule(function()
-            vim.wait(5)
-            vim.fn.chansend(
-              vim.v.stderr,
+          vim.defer_fn(function()
+            vim.loop.new_tty(1, false):write(
               -- save cursor, move cursor to target, display sixel, restore cursor
               "\27[s"
                 .. string.format("\27[%d;%dH", row + (extrarow > 1 and extrarow or 0), col + extracol + 2)
                 .. out
                 .. "\27[u"
             )
-          end)
+          end, 100)
         end
         display()
         vim.schedule(function()
@@ -195,7 +192,7 @@ local cfg = {
       },
     },
     {
-      section = "sixelimg",
+      section = "img",
     },
     -- {
     --   section = "terminal",

@@ -1,6 +1,20 @@
 ---@module "trouble"
 return {
   {
+    "OXY2DEV/patterns.nvim",
+  },
+  {
+    "echasnovski/mini.nvim",
+    version = "*",
+    config = function()
+      require("mini.ai").setup()
+      require("mini.move").setup()
+      require("mini.surround").setup()
+      require("mini.pairs").setup()
+    end,
+    event = "BufReadPost",
+  },
+  {
     "folke/trouble.nvim",
 
     cond = not vim.g.vscode,
@@ -32,14 +46,16 @@ return {
     },
   },
 
-  { "Issafalcon/lsp-overloads.nvim", config = false },
+  { "Issafalcon/lsp-overloads.nvim", config = false, cond = not vim.g.vscode },
 
   {
+
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    cond = not vim.g.vscode,
     dependencies = {
       "neovim/nvim-lspconfig",
     },
-    event = "BufEnter",
+    event = "BufReadPost",
     config = function()
       vim.diagnostic.config {
         virtual_text = false,
@@ -75,7 +91,9 @@ return {
         ["<C-d>"] = { "show_documentation", "hide_documentation" },
         -- scroll_documentation_up = { "<C-b>", "<ScrollWheelUp>" },
         -- scroll_documentation_down = { "<C-f>", "<ScrollWheelDown>" },
-        cmdline = {
+      },
+      cmdline = {
+        keymap = {
           [require("configs.os-dependend").custom.completionOpen] = { "show" },
           ["<ESC>"] = {
             function(cmp)
@@ -152,6 +170,7 @@ return {
 
   {
     "mfussenegger/nvim-dap",
+    cond = not vim.g.vscode,
     config = function()
       require "configs.dap"
     end,
@@ -159,6 +178,7 @@ return {
 
   {
     "rcarriga/nvim-dap-ui",
+    cond = not vim.g.vscode,
     dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
     config = function(_, opts)
       require("dapui").setup(opts)
@@ -167,6 +187,7 @@ return {
 
   {
     "neovim/nvim-lspconfig",
+    cond = not vim.g.vscode,
     dependencies = {
       { "folke/neoconf.nvim" },
     },
@@ -176,25 +197,20 @@ return {
   },
   {
     "williamboman/mason.nvim",
+    cond = not vim.g.vscode,
     opts = {
       registries = {
         "github:nvim-java/mason-registry",
         "github:mason-org/mason-registry",
+        "github:Crashdummyy/mason-registry",
       },
     },
   },
   {
     "stevearc/conform.nvim",
+    cond = not vim.g.vscode,
     event = "BufWritePre", -- uncomment for format on save
     opts = require "configs.conform",
-  },
-  {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    opts = {
-      fast_wrap = {},
-      disable_filetype = { "TelescopePrompt", "vim" },
-    },
   },
   {
     enabled = require("configs.os-dependend").plugins.direnv.enable,
