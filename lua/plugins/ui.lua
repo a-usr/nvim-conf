@@ -317,17 +317,52 @@ return {
     end,
   },
   {
-    -- enabled = false,
-    "utilyre/barbecue.nvim",
-    name = "barbecue",
-    version = "*",
-    event = "BufReadPost",
+    "Bekaboo/dropbar.nvim",
+    -- optional, but required for fuzzy finder support
+    -- dependencies = {
+    --   'nvim-telescope/telescope-fzf-native.nvim',
+    --   build = 'make'
+    -- },
+    event = "FileType",
+    config = function()
+      local dropbar_api = require "dropbar.api"
+      vim.keymap.set("n", "<Leader>;", dropbar_api.pick, { desc = "Pick symbols in winbar" })
+      -- vim.keymap.set('n', '[;', dropbar_api.goto_context_start, { desc = 'Go to start of current context' })
+      -- vim.keymap.set('n', '];', dropbar_api.select_next_context, { desc = 'Select next context' })
+    end,
+  },
+  {
+    event = "LspAttach",
+    "a-usr/nvim-navbuddy",
     dependencies = {
       "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons", -- optional dependency
+      "MunifTanjim/nui.nvim",
     },
     opts = {
-      -- configurations go here
+      lsp = { auto_attach = true },
+      node_markers = {
+        icons = {
+          branch = " ",
+        },
+      },
+      icons = {
+        Enum = "󰕘 ",
+        Interface = "󰕘 ",
+      },
     },
   },
+  -- {
+  --   -- enabled = false,
+  --   "utilyre/barbecue.nvim",
+  --   name = "barbecue",
+  --   version = "*",
+  --   event = "BufReadPost",
+  --   dependencies = {
+  --     "SmiteshP/nvim-navic",
+  --     "nvim-tree/nvim-web-devicons", -- optional dependency
+  --   },
+  --   opts = {
+  --     -- configurations go here
+  --   },
+  -- },
 } ---@type LazySpec

@@ -19,6 +19,7 @@ return {
 
       opts.win = {}
 
+      ---@type snacks.picker.Config | any
       opts.picker = {
         layouts = {
           default = {
@@ -126,7 +127,6 @@ return {
 
   {
     "olimorris/persisted.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
     event = "BufReadPre", -- this will only start session saving when an actual file was opened
     opts = {
       autostart = true, -- Automatically start the plugin on load?
