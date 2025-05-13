@@ -1,5 +1,12 @@
 return {
   {
+    "mcauley-penney/visual-whitespace.nvim",
+    config = true,
+    event = "ModeChanged *:[vV\22]", -- optionally, lazy load on entering visual mode
+    opts = {},
+  },
+
+  {
     "OXY2DEV/helpview.nvim",
     lazy = false,
   },
@@ -64,36 +71,6 @@ return {
   },
 
   {
-    "tris203/precognition.nvim",
-    event = "BufReadPost",
-    opts = {
-      startVisible = true,
-      -- showBlankVirtLine = true,
-      -- highlightColor = { link = "Comment" },
-      -- hints = {
-      --      Caret = { text = "^", prio = 2 },
-      --      Dollar = { text = "$", prio = 1 },
-      --      MatchingPair = { text = "%", prio = 5 },
-      --      Zero = { text = "0", prio = 1 },
-      --      w = { text = "w", prio = 10 },
-      --      b = { text = "b", prio = 9 },
-      --      e = { text = "e", prio = 8 },
-      --      W = { text = "W", prio = 7 },
-      --      B = { text = "B", prio = 6 },
-      --      E = { text = "E", prio = 5 },
-      -- },
-      -- gutterHints = {
-      --     G = { text = "G", prio = 10 },
-      --     gg = { text = "gg", prio = 9 },
-      --     PrevParagraph = { text = "{", prio = 8 },
-      --     NextParagraph = { text = "}", prio = 8 },
-      -- },
-      -- disabled_fts = {
-      --     "startify",
-      -- },
-    },
-  },
-  {
     "a-usr/nui.nvim",
     name = "nui.nvim",
   },
@@ -105,7 +82,7 @@ return {
       local builtin = require "statuscol.builtin"
       require("statuscol").setup {
         --   -- configuration goes here, for example:
-        --   -- relculright = true,
+        -- relculright = true,
         segments = {
           { sign = { namespace = { "gitsigns_signs_.*" }, colwidth = 1, maxwidth = 2, auto = true } },
           {

@@ -4,6 +4,23 @@ end
 
 local cmd = vim.api.nvim_create_autocmd
 
+local function esc(x)
+  return (
+    x:gsub("%%", "%%%%")
+      :gsub("^%^", "%%^")
+      :gsub("%$$", "%%$")
+      :gsub("%(", "%%(")
+      :gsub("%)", "%%)")
+      :gsub("%.", "%%.")
+      :gsub("%[", "%%[")
+      :gsub("%]", "%%]")
+      :gsub("%*", "%%*")
+      :gsub("%+", "%%+")
+      :gsub("%-", "%%-")
+      :gsub("%?", "%%?")
+  )
+end
+
 UserAutoCmd {
   pattern = "PersistedStart",
   callback = function()
@@ -63,15 +80,15 @@ UserAutoCmd {
     assert(sessionfile ~= nil)
     local session = sessionfile:read "a"
 
-    session = string.gsub(session, "\ncd ", "\ntcd ")
+    -- session = string.gsub(session, "\ncd ", "\ntcd ")
     -- get tab buffer filenames
     local bufs = {}
     for _, bufnr in ipairs(vim.t.bufs) do
-      local fname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":~"):gsub("\\", "/")
+      local fname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p:~"):gsub("\\", "/")
       -- remove part that is relative to home dir if applicable
-      if fname:sub(1, 2) == "~/" then
-        fname = fname:sub(3, -1)
-      end
+      -- if fname:sub(1, 2) == "~/" then
+      --   fname = fname:sub(3, -1);
+      -- end
       bufs[fname] = true
     end
 
@@ -79,7 +96,6 @@ UserAutoCmd {
     -- get files to remove
     local obsoletefiles = {}
     for fname in session:gmatch "badd%s%+%d+%s([^%s]+)" do
-      -- Snacks.debug.log(fname)
       if bufs[fname] ~= true then
         table.insert(obsoletefiles, fname)
       end
@@ -87,7 +103,7 @@ UserAutoCmd {
     -- Snacks.debug.log(obsoletefiles)
 
     for _, fname in ipairs(obsoletefiles) do
-      session = session:gsub("badd%s%+%d+%s" .. fname .. "%s+", "")
+      session = session:gsub("badd%s%+%d+%s" .. esc(fname) .. "%s+", "")
     end
 
     -- Snacks.debug.log(session)
@@ -99,14 +115,36 @@ UserAutoCmd {
   end,
 }
 
-vim.api.nvim_create_autocmd("LspAttach", {
+cmd("LspAttach", {
   callback = function(args)
-    local client = vim.lsp.get_clients({ bufnr = args.buf })[1]
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client.server_capabilities.signatureHelpProvider then
       require("lsp-overloads").setup(client, {})
+      vim.api.nvim_buf_set_keymap(
+        args.buf,
+        "i",
+        "<A-s>",
+        "<cmd>LspOverloadsSignature<CR>",
+        { noremap = true, silent = true }
+      )
+      vim.api.nvim_buf_set_keymap(
+        args.buf,
+        "n",
+        "<A-s>",
+        "<cmd>LspOverloadsSignature<CR>",
+        { noremap = true, silent = true }
+      )
       -- vim.notify "lsp-overloads set up"
     end
     -- print(vim.inspect(args))
     require("which-key").add { require("mappings.util").GetMapsOn("LSP attach", require "mappings"), buffer = args.buf }
+  end,
+})
+
+cmd("LspNotify", {
+  callback = function(args)
+    if args.data.method == "textDocument/didOpen" then
+      vim.lsp.foldclose("imports", vim.fn.bufwinid(args.buf))
+    end
   end,
 })

@@ -15,13 +15,7 @@ return require("mappings.util").Map {
         {
           "e",
           function()
-            local preTo
-            require("precognition").hide()
-            preTo = require("precognition").is_visible
-            require "ui.extBreakpoint" ()
-            if preTo then
-              require("precognition").show()
-            end
+            require "ui.extBreakpoint"()
           end,
           desc = "Set Advanced Breakpoint Options",
         },
