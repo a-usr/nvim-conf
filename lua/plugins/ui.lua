@@ -328,6 +328,15 @@ return {
       },
     },
   },
+  {
+    "sphamba/smear-cursor.nvim",
+    event = "BufEnter",
+    opts = {
+      smear_to_cmd = false,
+      stiffness = 0.9,
+      trailing_stiffness = 0.70,
+    },
+  },
   -- {
   --   -- enabled = false,
   --   "utilyre/barbecue.nvim",

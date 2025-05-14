@@ -30,6 +30,11 @@ return {
     execute = "Todo",
     require_input = false,
   },
+  {
+    name = "Navic",
+    execute = "Navbuddy",
+    require_input = false,
+  },
 }
 
 ---@class toolbox.command

@@ -210,24 +210,6 @@ return require("mappings.util").Map {
       mode = "t",
     },
   },
-  --- Scroll ---
-  {
-    mode = { "i", "v", "n" },
-    {
-      "<C-UP>",
-      function()
-        require("neoscroll").scroll(-3, { duration = 2 })
-      end,
-      desc = "Scroll Up (Fast)",
-    },
-    {
-      "<C-DOWN>",
-      function()
-        require("neoscroll").scroll(3, { duration = 2 })
-      end,
-      desc = "Scroll Down (Fast)",
-    },
-  },
   {
     "<RightMouse>",
     function()
