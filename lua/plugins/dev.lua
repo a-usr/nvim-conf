@@ -1,6 +1,17 @@
 ---@module "trouble"
 return {
   {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
+    opts = {
+      view = {
+        merge_tool = {
+          layout = "diff3_mixed",
+        },
+      },
+    },
+  },
+  {
     "OXY2DEV/patterns.nvim",
   },
   {

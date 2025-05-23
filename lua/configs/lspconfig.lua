@@ -6,11 +6,29 @@ vim.lsp.inlay_hint.enable()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers =
-  { "html", "cssls", "qmlls", "nixd", "nil_ls", "jsonls", "ts_ls", "astro", "nushell", "pylsp", "svelte", "hls" }
+local servers = {
+  "html",
+  "cssls",
+  "qmlls",
+  "nixd",
+  "nil_ls",
+  "jsonls",
+  "ts_ls",
+  "astro",
+  "nushell",
+  "basedpyright",
+  "ruff",
+  "svelte",
+  "hls",
+}
 local nvlsp = require "nvchad.configs.lspconfig"
 
-local on_attach = function(_, bufnr) end -- Keep this just in case I need it in the future
+local on_attach = function(client, bufnr)
+  if client.name == "ruff" then
+    -- Disable hover in favor of Basedpyright
+    client.server_capabilities.hoverProvider = false
+  end
+end -- Keep this just in case I need it in the future
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -23,6 +41,21 @@ end
 
 lspconfig.html.setup {
   cmd = require("configs.os-dependend").lsp.html.cmd,
+}
+
+lspconfig.basedpyright.setup {
+  settings = {
+    basedpyright = {
+      -- Using Ruff's import organizer
+      disableOrganizeImports = true,
+    },
+    python = {
+      analysis = {
+        -- Ignore all files for analysis to exclusively use Ruff for linting
+        ignore = { "*" },
+      },
+    },
+  },
 }
 --
 -- lspconfig.ts_ls.setup {

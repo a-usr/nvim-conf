@@ -65,7 +65,7 @@ M.lsp = function()
 
   -- return "%#St_Lsp#" .. client.name .. " "
   return gen_block(
-    require("nvim-web-devicons").get_icon_by_filetype(vim.bo.filetype) or " ",
+    "",
     client.name .. (clients[2] ~= nil and " +" or ""),
     "%#St_lsp_sep#",
     "%#St_lsp_bg#",
