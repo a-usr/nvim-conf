@@ -20,6 +20,7 @@ local servers = {
   "ruff",
   "svelte",
   "hls",
+  "tinymist",
 }
 local nvlsp = require "nvchad.configs.lspconfig"
 
