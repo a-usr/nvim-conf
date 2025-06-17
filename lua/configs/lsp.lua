@@ -37,7 +37,7 @@ local servers = {
   "ruff",
   "svelte",
   "hls",
-  "tinymist",
+  "rzls",
 }
 local nvlsp = require "nvchad.configs.lspconfig"
 
@@ -103,18 +103,6 @@ end
 --     },
 --   },
 -- }
-local javasetup = false
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*.java",
-  callback = function()
-    if javasetup then
-      return
-    end
-    javasetup = true
-    require "java"
-    vim.lsp.enable "jdtls"
-  end,
-})
 
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
