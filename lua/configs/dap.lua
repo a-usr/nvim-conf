@@ -12,13 +12,63 @@ dap.listeners.before.event_exited.dapui_config = function()
   require("dapui").close()
 end
 
----@type table<string, dap.Adapter|dap.Adapter|fun(callback: fun(adapter: dap.Adapter), config: dap.Configuration, parent?: dap.Session)>>
-local adapters = {}
+local function multiassign(inp, tab)
+  function asf(item, key)
+    if type(item) == "function" then
+      tab[key] = item(key)
+    else
+      tab[key] = item
+    end
+  end
 
-for adapter, config in pairs(adapters) do
-  dap.adapters[adapter] = config
+  for _type, item in pairs(inp) do
+    if type(_type) == "table" then
+      for _, __type in ipairs(_type) do
+        asf(item, __type)
+      end
+    else
+      assert(type(_type) == "string")
+      asf(item, _type)
+    end
+  end
 end
 
-for adapter, config in pairs(require("configs.os-dependend").dap.adapters) do
-  dap.adapters[adapter] = config
-end
+local js_types = {
+  "msedge",
+  "pwa-msedge",
+  "node",
+  "pwa-node",
+  "node-terminal",
+  "pwa-chrome",
+  "chrome",
+}
+
+---@type table<string | string[], dap.Adapter|fun(string): dap.Adapter>
+local adapters = {
+  [js_types] = function(id)
+    return {
+      type = "server",
+      host = "localhost",
+      port = "${port}",
+      id = id,
+      executable = {
+        command = "node",
+        -- 💀 Make sure to update this path to point to your installation
+        args = { vim.fn.stdpath "data" .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
+      },
+    }
+  end,
+}
+
+multiassign(adapters, dap.adapters)
+
+multiassign(require("configs.os-dependend").dap.adapters, dap.adapters)
+
+local launchjson_type_to_ft = {
+  [js_types] = {
+    "javascript",
+    "typescript",
+  },
+}
+
+multiassign(launchjson_type_to_ft, require("dap.ext.vscode").type_to_filetypes)

@@ -28,20 +28,27 @@ if not vim.uv.fs_stat(lazypath) then
 end
 
 vim.opt.rtp:prepend(lazypath)
-
 local lazy_config = require "configs.lazy"
+local language_plugins = require "languages"
+
+local all_plugins = vim
+  .iter({
+    {
+      {
+        "NvChad/NvChad",
+        lazy = false,
+        branch = "v2.5",
+        import = "nvchad.plugins",
+      },
+
+      { import = "plugins" },
+    },
+    language_plugins,
+  })
+  :flatten():totable()
 
 -- load plugins
-require("lazy").setup({
-  {
-    "NvChad/NvChad",
-    lazy = false,
-    branch = "v2.5",
-    import = "nvchad.plugins",
-  },
-
-  { import = "plugins" },
-}, lazy_config)
+require("lazy").setup(all_plugins, lazy_config)
 
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
@@ -71,3 +78,9 @@ end
 vim.schedule(function()
   require "mappings"
 end)
+vim.filetype.add {
+  extension = {
+    razor = "razor",
+    cshtml = "razor",
+  },
+}
