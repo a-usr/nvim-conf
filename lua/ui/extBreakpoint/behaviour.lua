@@ -38,24 +38,18 @@ end
 function M.bind(components, Layout)
   layout = Layout
   for i, component in pairs(components) do
+    local next = i == #components and 1 or i + 1
+    local prev = i == 1 and #components or i - 1
     component:map("i", "<esc>", function()
       require("ui.extBreakpoint.behaviour").exit_ui()
     end)
 
     component:map("i", "<Tab>", function()
-      local ind = i
-      if ind == #components then
-        ind = 0
-      end
-      vim.api.nvim_set_current_win(components[ind + 1].winid)
+      vim.api.nvim_set_current_win(components[next].winid)
     end)
 
     component:map("i", "<S-Tab>", function()
-      local ind = i
-      if ind == 1 then
-        ind = #components + 1
-      end
-      vim.api.nvim_set_current_win(components[ind - 1].winid)
+      vim.api.nvim_set_current_win(components[prev].winid)
     end)
   end
 end

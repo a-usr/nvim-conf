@@ -313,7 +313,7 @@ return {
     "a-usr/nvim-navbuddy",
     dependencies = {
       "SmiteshP/nvim-navic",
-      "MunifTanjim/nui.nvim",
+      "a-usr/nui.nvim",
     },
     opts = {
       lsp = { auto_attach = true },

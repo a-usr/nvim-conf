@@ -35,6 +35,13 @@ return {
     execute = "Navbuddy",
     require_input = false,
   },
+  {
+    name = "Notification history",
+    execute = function()
+      Snacks.notifier.show_history()
+    end,
+    require_input = false,
+  },
 }
 
 ---@class toolbox.command

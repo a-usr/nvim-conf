@@ -1,5 +1,3 @@
-local Popup = require "nui.popup"
-local event = require("nui.utils.autocmd").event
 local Input = require "nui.input"
 local Layout = require "nui.layout"
 
@@ -15,7 +13,7 @@ return function()
   }
   local curpos = vim.fn.getcurpos()
 
-  for _, bp in pairs(require("dap.breakpoints").get(vim.fn.bufname(vim.api.nvim_get_current_buf()))) do
+  for _, bp in pairs(require("dap.breakpoints").get(vim.api.nvim_get_current_buf())) do
     if not bp[1] then
       goto continue
     end
