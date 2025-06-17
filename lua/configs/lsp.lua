@@ -3,20 +3,37 @@ require("nvchad.configs.lspconfig").defaults()
 
 vim.lsp.inlay_hint.enable()
 
-local lspconfig = require "lspconfig"
-
--- EXAMPLE
 local servers = {
-  "html",
+  { "html", {
+    cmd = require("configs.os-dependend").lsp.html.cmd,
+    filetype = { "html", "razor" },
+  } },
   "cssls",
   "qmlls",
   "nixd",
   "nil_ls",
   "jsonls",
   "ts_ls",
+  "roslyn",
   "astro",
   "nushell",
-  "basedpyright",
+  {
+    "basedpyright",
+    {
+      settings = {
+        basedpyright = {
+          -- Using Ruff's import organizer
+          disableOrganizeImports = true,
+        },
+        python = {
+          analysis = {
+            -- Ignore all files for analysis to exclusively use Ruff for linting
+            ignore = { "*" },
+          },
+        },
+      },
+    },
+  },
   "ruff",
   "svelte",
   "hls",
@@ -29,35 +46,26 @@ local on_attach = function(client, bufnr)
     -- Disable hover in favor of Basedpyright
     client.server_capabilities.hoverProvider = false
   end
-end -- Keep this just in case I need it in the future
-
--- lsps with default config
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    on_init = nvlsp.on_init,
-    capabilities = nvlsp.capabilities,
-  }
 end
 
-lspconfig.html.setup {
-  cmd = require("configs.os-dependend").lsp.html.cmd,
-}
+vim.lsp.config("*", {
+  on_attach = on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+})
+-- lsps with default config
+for _, lsp in ipairs(servers) do
+  if type(lsp) == "string" then
+    vim.lsp.enable(lsp)
+  else
+    assert(type(lsp) == "table", "encountered unexpected config")
+    assert(type(lsp[1]) == "string", "encountered unexpected config")
+    assert(type(lsp[2]) == "table", "encountered unexpected config")
+    vim.lsp.config(lsp[1], lsp[2])
+    vim.lsp.enable(lsp[1])
+  end
+end
 
-lspconfig.basedpyright.setup {
-  settings = {
-    basedpyright = {
-      -- Using Ruff's import organizer
-      disableOrganizeImports = true,
-    },
-    python = {
-      analysis = {
-        -- Ignore all files for analysis to exclusively use Ruff for linting
-        ignore = { "*" },
-      },
-    },
-  },
-}
 --
 -- lspconfig.ts_ls.setup {
 --   cmd = { "fish", "-NP", "-c", "typescript-language-server --stdio" },
@@ -104,12 +112,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end
     javasetup = true
     require "java"
-    lspconfig.jdtls.setup {
-      on_attach = nvlsp.on_attach,
-      on_init = nvlsp.on_init,
-      capabilities = nvlsp.capabilities,
-      cmd = require("configs.os-dependend").lsp.jdtls.cmd,
-    }
+    vim.lsp.enable "jdtls"
   end,
 })
 

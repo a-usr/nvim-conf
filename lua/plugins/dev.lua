@@ -1,5 +1,6 @@
 ---@module "trouble"
 return {
+
   {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
@@ -75,7 +76,7 @@ return {
       require("lsp_lines").setup()
     end,
   },
-
+  -- { import = "nvchad.blink.lazyspec" },
   {
     -- enabled = require("configs.os-dependend").plugins.blink.enable,
     "Saghen/blink.cmp",
@@ -186,6 +187,7 @@ return {
     cond = not vim.g.vscode,
     config = function()
       require "configs.dap"
+      require("lib.lazy").notify_module "dap"
     end,
   },
 
@@ -205,7 +207,7 @@ return {
       { "folke/neoconf.nvim" },
     },
     config = function()
-      require "configs.lspconfig"
+      require "configs.lsp"
     end,
   },
   {
