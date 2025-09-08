@@ -2,13 +2,6 @@
 return {
 
   {
-    name = "Timer",
-    execute = function()
-      require("timerly").open()
-    end,
-    require_input = false,
-  },
-  {
     name = "Format",
     execute = function()
       require("conform").format()

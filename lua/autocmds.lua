@@ -70,47 +70,47 @@ UserAutoCmd {
   end,
 }
 
-UserAutoCmd {
-  pattern = "PersistedSavePost",
-  callback = function()
-    if not vim.g.persisting then
-      return
-    end
-    local sessionfile = io.open(vim.g.persisted_loaded_session, "r+")
-    assert(sessionfile ~= nil)
-    local session = sessionfile:read "a"
-
-    -- session = string.gsub(session, "\ncd ", "\ntcd ")
-    -- get tab buffer filenames
-    local bufs = {}
-    for _, bufnr in ipairs(vim.t.bufs) do
-      local fname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p:~"):gsub("\\", "/")
-      -- remove part that is relative to home dir if applicable
-      -- if fname:sub(1, 2) == "~/" then
-      --   fname = fname:sub(3, -1);
-      -- end
-      bufs[fname] = true
-    end
-
-    -- get files to remove
-    local obsoletefiles = {}
-    for fname in session:gmatch "badd%s%+%d+%s([^%s]+)" do
-      if bufs[fname] ~= true then
-        table.insert(obsoletefiles, fname)
-      end
-    end
-
-    for _, fname in ipairs(obsoletefiles) do
-      session = session:gsub("badd%s%+%d+%s" .. esc(fname) .. "%s+", "")
-    end
-
-
-    sessionfile:seek "set"
-    sessionfile:write(session)
-    sessionfile:flush()
-    sessionfile:close()
-  end,
-}
+-- UserAutoCmd {
+--   pattern = "PersistedSavePost",
+--   callback = function()
+--     if not vim.g.persisting then
+--       return
+--     end
+--     local sessionfile = io.open(vim.g.persisted_loaded_session, "r+")
+--     assert(sessionfile ~= nil)
+--     local session = sessionfile:read "a"
+--     Snacks.debug(session)
+--
+--     -- session = string.gsub(session, "\ncd ", "\ntcd ")
+--     -- get tab buffer filenames
+--     local bufs = {}
+--     for _, bufnr in ipairs(vim.t.bufs) do
+--       local fname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p:~"):gsub("\\", "/")
+--       -- remove part that is relative to home dir if applicable
+--       -- if fname:sub(1, 2) == "~/" then
+--       --   fname = fname:sub(3, -1);
+--       -- end
+--       bufs[fname] = true
+--     end
+--
+--     -- get files to remove
+--     local obsoletefiles = {}
+--     for fname in session:gmatch "badd%s%+%d+%s([^%s]+)" do
+--       if bufs[fname] ~= true then
+--         table.insert(obsoletefiles, fname)
+--       end
+--     end
+--
+--     for _, fname in ipairs(obsoletefiles) do
+--       session = session:gsub("badd%s%+%d+%s" .. esc(fname) .. "%s+", "")
+--     end
+--
+--     sessionfile:seek "set"
+--     sessionfile:write(session)
+--     sessionfile:flush()
+--     sessionfile:close()
+--   end,
+-- }
 
 cmd("LspAttach", {
   callback = function(args)

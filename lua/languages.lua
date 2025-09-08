@@ -1,11 +1,11 @@
+local enabled_languages = { "cs", "lua", "python", "rust", "webdev" }
+
 local function imp(path)
   return { import = "languages." .. path .. ".plugins" }
 end
 
 local langs_path = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":r")
 local langs = vim.fn.readdir(langs_path)
-
-local enabled_languages = { "cs", "lua", "python", "rust", "webdev" }
 
 local filtered_languages = vim.tbl_filter(function(el)
   return vim.tbl_contains(langs, el)

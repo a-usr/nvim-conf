@@ -1,69 +1,66 @@
 -- load defaults i.e lua_lsp
-require("nvchad.configs.lspconfig").defaults()
-
 vim.lsp.inlay_hint.enable()
 
 local servers = {
-  { "html", {
-    cmd = require("configs.os-dependend").lsp.html.cmd,
-    filetype = { "html", "razor" },
-  } },
-  "cssls",
-  "qmlls",
-  "nixd",
-  "nil_ls",
-  "jsonls",
-  "ts_ls",
-  "roslyn",
-  "astro",
-  "nushell",
-  {
-    "basedpyright",
-    {
-      settings = {
-        basedpyright = {
-          -- Using Ruff's import organizer
-          disableOrganizeImports = true,
-        },
-        python = {
-          analysis = {
-            -- Ignore all files for analysis to exclusively use Ruff for linting
-            ignore = { "*" },
-          },
-        },
-      },
-    },
-  },
-  "ruff",
-  "svelte",
-  "hls",
-  "rzls",
+	{ "html", {
+		cmd = require("configs.os-dependend").lsp.html.cmd,
+		filetype = { "html", "razor" },
+	} },
+	"cssls",
+	"qmlls",
+	"nixd",
+	"nil_ls",
+	"jsonls",
+	"ts_ls",
+	"roslyn",
+	"astro",
+	"nushell",
+	{
+		"basedpyright",
+		{
+			settings = {
+				basedpyright = {
+					-- Using Ruff's import organizer
+					disableOrganizeImports = true,
+				},
+				python = {
+					analysis = {
+						-- Ignore all files for analysis to exclusively use Ruff for linting
+						ignore = { "*" },
+					},
+				},
+			},
+		},
+	},
+	"ruff",
+	"svelte",
+	"hls",
+	"rzls",
+	"tinymist",
+	"lua_ls",
 }
-local nvlsp = require "nvchad.configs.lspconfig"
 
 local on_attach = function(client, bufnr)
-  if client.name == "ruff" then
-    -- Disable hover in favor of Basedpyright
-    client.server_capabilities.hoverProvider = false
-  end
+	if client.name == "ruff" then
+		-- Disable hover in favor of Basedpyright
+		client.server_capabilities.hoverProvider = false
+	end
 end
 
 vim.lsp.config("*", {
-  on_attach = on_attach,
-  on_init = nvlsp.on_init,
-  capabilities = nvlsp.capabilities,
+	on_attach = on_attach,
 })
 -- lsps with default config
 for _, lsp in ipairs(servers) do
-  if type(lsp) == "string" then
-    vim.lsp.enable(lsp)
-  else
-    assert(type(lsp) == "table", "encountered unexpected config")
-    assert(type(lsp[1]) == "string", "encountered unexpected config")
-    assert(type(lsp[2]) == "table", "encountered unexpected config")
-    vim.lsp.config(lsp[1], lsp[2])
-    vim.lsp.enable(lsp[1])
-  end
+	if type(lsp) == "string" then
+		vim.lsp.enable(lsp)
+	else
+		assert(type(lsp) == "table", "encountered unexpected config")
+		assert(type(lsp[1]) == "string", "encountered unexpected config")
+		assert(type(lsp[2]) == "table", "encountered unexpected config")
+		vim.lsp.config(lsp[1], lsp[2])
+		vim.lsp.enable(lsp[1])
+	end
 end
 
 --

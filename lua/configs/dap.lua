@@ -53,7 +53,6 @@ local adapters = {
       id = id,
       executable = {
         command = "node",
-        -- 💀 Make sure to update this path to point to your installation
         args = { vim.fn.stdpath "data" .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
       },
     }

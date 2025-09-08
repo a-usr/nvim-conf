@@ -14,7 +14,7 @@ local cmd = {
 
 return {
   cmd = cmd,
-  filetypes = { "cs", "csx" },
+  filetypes = { "cs", "csx", "xaml" },
   handlers = require "rzls.roslyn_handlers",
   settings = {
     ["csharp|completion"] = {

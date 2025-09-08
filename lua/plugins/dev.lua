@@ -1,17 +1,15 @@
 ---@module "trouble"
 return {
-
   {
-    "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
+    "SmiteshP/nvim-navic",
     opts = {
-      view = {
-        merge_tool = {
-          layout = "diff3_mixed",
-        },
-      },
+      highlight = true,
+      lsp = { auto_attach = true },
     },
+    config = true,
+    lazy = false,
   },
+
   {
     "OXY2DEV/patterns.nvim",
   },
@@ -177,7 +175,6 @@ return {
     },
 
     config = function(_, opts)
-      dofile(vim.g.base46_cache .. "cmp")
       require("blink-cmp").setup(opts)
     end,
   },

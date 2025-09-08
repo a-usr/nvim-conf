@@ -1,11 +1,13 @@
+local lazydev = require("lazydev.lsp")
 return {
-  settings = {
-    Lua = {
-      hint = {
-        enable = true,
-        paramType = false,
-        paramName = "Disable",
-      },
-    },
-  },
+	on_attach = lazydev.attach,
+	settings = {
+		Lua = {
+			hint = {
+				enable = true,
+				paramType = false,
+				paramName = "Disable",
+			},
+		},
+	},
 }
