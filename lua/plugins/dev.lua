@@ -187,14 +187,13 @@ return {
       require("lib.lazy").notify_module "dap"
     end,
   },
-
   {
-    "rcarriga/nvim-dap-ui",
+    "igorlfs/nvim-dap-view",
     cond = not vim.g.vscode,
-    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-    config = function(_, opts)
-      require("dapui").setup(opts)
-    end,
+    dependencies = { "mfussenegger/nvim-dap" },
+    ---@module 'dap-view'
+    ---@type dapview.Config
+    opts = {},
   },
 
   {
