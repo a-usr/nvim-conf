@@ -1,29 +1,29 @@
 return {
 	{
 		"neovim/nvim-treesitter",
-		event = "BufEnter"
+		event = "BufEnter",
 	},
 	{
-		'nvim-lualine/lualine.nvim',
-		dependencies = { 'nvim-tree/nvim-web-devicons' },
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = function(_, opts)
 			local theme_name = "auto"
 
 			local theme = require("lualine.themes." .. theme_name)
 
 			for _, section in pairs(theme) do
-				if (section.c == nil) then
+				if section.c == nil then
 					goto continue
 				end
 				-- section.c.fg = section.c.bg
-				section.c.bg = require('lualine.utils.utils').extract_highlight_colors('Normal', 'bg')
+				section.c.bg = require("lualine.utils.utils").extract_highlight_colors("Normal", "bg")
 				::continue::
 			end
 
-			local empty = require('lualine.component'):extend()
+			local empty = require("lualine.component"):extend()
 			function empty:draw(default_highlight)
-				self.status = ' '
-				self.applied_separator = ''
+				self.status = " "
+				self.applied_separator = ""
 				self:apply_highlights(default_highlight)
 				self:apply_section_separators()
 				return self.status
@@ -31,46 +31,45 @@ return {
 
 			local function process_sections(sections)
 				for name, section in pairs(sections) do
-					for pos = 1, name ~= 'lualine_z' and #section or #section - 1 do
+					for pos = 1, name ~= "lualine_z" and #section or #section - 1 do
 						table.insert(section, pos * 2, { empty, color = theme.normal.c })
 					end
 				end
 				return sections
 			end
 
-			return vim.tbl_deep_extend("force", opts,
-				{
-					options = {
-						globalstatus = true,
-						theme = theme,
-						component_separators = '',
-						section_separators = '',
-					},
-					sections = process_sections {
-						lualine_a = { 'mode' },
-						lualine_b = { 'branch', 'diff', 'diagnostics' },
-						lualine_c = {},
-						lualine_x = { 'encoding' },
-						lualine_y = {},
-						lualine_z = { 'location' }
-					},
-				})
+			return vim.tbl_deep_extend("force", opts, {
+				options = {
+					globalstatus = true,
+					theme = theme,
+					component_separators = "",
+					section_separators = "",
+				},
+				sections = process_sections({
+					lualine_a = { "mode" },
+					lualine_b = { "branch", "diff", "diagnostics" },
+					lualine_c = {},
+					lualine_x = { "encoding" },
+					lualine_y = {},
+					lualine_z = { "location" },
+				}),
+			})
 		end,
-		lazy = false
+		lazy = false,
 	},
 	{
-		'b0o/incline.nvim',
+		"b0o/incline.nvim",
 		dependencies = {
-			"SmiteshP/nvim-navic"
+			"SmiteshP/nvim-navic",
 		},
 		config = function(_, opts)
-			require('incline').setup(opts)
+			require("incline").setup(opts)
 		end,
 		-- Optional: Lazy load Incline
 		opts = function(_, opts)
-			local navic = require 'nvim-navic'
-			local devicons = require 'nvim-web-devicons'
-			local helpers = require 'incline.helpers'
+			local navic = require("nvim-navic")
+			local devicons = require("nvim-web-devicons")
+			local helpers = require("incline.helpers")
 			local hl = require("ripped.highlights")
 
 			opts.window = {
@@ -78,45 +77,46 @@ return {
 					borders = true,
 				},
 				margin = {
-					vertical = 0
-				}
+					vertical = 0,
+				},
 			}
 
 			opts.render = function(props)
-				local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ':t')
-				if filename == '' then
-					filename = '[No Name]'
+				local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+				if filename == "" then
+					filename = "[No Name]"
 				end
 
 				local ft_icon, ft_color = devicons.get_icon_color(filename)
-				
-				local ft_color_dim = hl.rgb_to_hex(hl.lab_to_rgb(hl.dim (hl.rgb_to_lab(hl.rgb(ft_color)))))
+
+				local ft_color_dim = hl.rgb_to_hex(hl.lab_to_rgb(hl.dim(hl.rgb_to_lab(hl.rgb(ft_color)))))
 				-- Snacks.debug(hl.rgb(ft_color))
 				local modified = vim.bo[props.buf].modified
 				local res = {
-					ft_icon and { ' ', ft_icon, ' ', guibg = ft_color, guifg = ft_color_dim } or '',
-					' ',
-					{ filename, gui = modified and 'bold,italic' or 'bold' },
+					ft_icon and { " ", ft_icon, " ", guibg = ft_color, guifg = ft_color_dim } or "",
+					" ",
+					{ filename, gui = modified and "bold,italic" or "bold" },
 					-- guibg = '#44406e',
-					guibg = ft_color_dim, guifg = ft_color
+					guibg = ft_color_dim,
+					guifg = ft_color,
 					-- group = "UiPalette3",
 				}
 				if props.focused then
 					for _, item in ipairs(navic.get_data(props.buf) or {}) do
 						table.insert(res, {
-							{ ' > ',     group = 'NavicSeparator' },
-							{ item.icon, group = 'NavicIcons' .. item.type },
-							{ item.name, group = 'NavicText' },
+							{ " > ", group = "NavicSeparator" },
+							{ item.icon, group = "NavicIcons" .. item.type },
+							{ item.name, group = "NavicText" },
 						})
 					end
 				end
-				table.insert(res, ' ')
+				table.insert(res, " ")
 				return res
 			end
 			return opts
 		end,
 
-		event = 'VeryLazy',
+		event = "VeryLazy",
 	},
 	"folke/which-key.nvim",
 	{
@@ -174,8 +174,8 @@ return {
 		"luukvbaal/statuscol.nvim",
 		event = "BufEnter",
 		config = function()
-			local builtin = require "statuscol.builtin"
-			require("statuscol").setup {
+			local builtin = require("statuscol.builtin")
+			require("statuscol").setup({
 				--   -- configuration goes here, for example:
 				-- relculright = true,
 				segments = {
@@ -192,10 +192,23 @@ return {
 						sign = { namespace = { "diagnostic/signs" }, maxwidth = 2, auto = true },
 						click = "v:lua.ScSa",
 					},
-					{ sign = { name = { "Dap.*" }, auto = true },                                             click = "v:lua.ScSa" },
-					{ text = { builtin.lnumfunc, " " },                                                       click = "v:lua.ScLa" },
 					{
-						sign = { namespace = { ".*" }, name = { ".*" }, maxwidth = 2, colwidth = 1, auto = true, wrap = true },
+						sign = { name = { "Dap.*" }, auto = true },
+						click = "v:lua.ScSa",
+					},
+					{
+						text = { builtin.lnumfunc, " " },
+						click = "v:lua.ScLa",
+					},
+					{
+						sign = {
+							namespace = { ".*" },
+							name = { ".*" },
+							maxwidth = 2,
+							colwidth = 1,
+							auto = true,
+							wrap = true,
+						},
 						click = "v:lua.ScSa",
 					},
 				},
@@ -209,14 +222,14 @@ return {
 					---   mousepos = f.getmousepos()  -- getmousepos() table, containing clicked line number/window id etc.
 					--- }
 					["todo%-sign%-.*"] = function(args)
-						print "a"
+						print("a")
 						print(vim.inspect(args))
 						if args.button == "l" then
-							vim.cmd "Trouble todo"
+							vim.cmd("Trouble todo")
 						end
 					end,
 				},
-			}
+			})
 		end,
 	},
 	{
@@ -328,19 +341,19 @@ return {
 					end,
 					-- next open window
 					["]w"] = function(win)
-						win:next { visible = true, focus = true }
+						win:next({ visible = true, focus = true })
 					end,
 					-- previous open window
 					["[w"] = function(win)
-						win:prev { visible = true, focus = true }
+						win:prev({ visible = true, focus = true })
 					end,
 					-- next loaded window
 					["]W"] = function(win)
-						win:next { pinned = false, focus = true }
+						win:next({ pinned = false, focus = true })
 					end,
 					-- prev loaded window
 					["[W"] = function(win)
-						win:prev { pinned = false, focus = true }
+						win:prev({ pinned = false, focus = true })
 					end,
 					-- increase width
 					["<c-w>>"] = function(win)
@@ -369,19 +382,19 @@ return {
 				},
 				-- enable this on Neovim <= 0.10.0 to properly fold edgebar windows.
 				-- Not needed on a nightly build >= June 5, 2023.
-				fix_win_height = vim.fn.has "nvim-0.10.0" == 0,
+				fix_win_height = vim.fn.has("nvim-0.10.0") == 0,
 			}
 			-- trouble
-			for _, pos in ipairs { "top", "bottom", "left", "right" } do
+			for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
 				opts[pos] = opts[pos] or {}
 				table.insert(opts[pos], {
 					ft = "trouble",
 					filter = function(_buf, win)
 						return vim.w[win].trouble
-								and vim.w[win].trouble.position == pos
-								and vim.w[win].trouble.type == "split"
-								and vim.w[win].trouble.relative == "editor"
-								and not vim.w[win].trouble_preview
+							and vim.w[win].trouble.position == pos
+							and vim.w[win].trouble.type == "split"
+							and vim.w[win].trouble.relative == "editor"
+							and not vim.w[win].trouble_preview
 					end,
 				})
 			end
@@ -428,8 +441,21 @@ return {
 		event = "BufEnter",
 		opts = {
 			smear_to_cmd = false,
-			stiffness = 0.9,
+			stiffness = 0.7,
 			trailing_stiffness = 0.70,
+			-- cursor_color = "#ffffff",
+			gradient_exponent = 0,
+			never_draw_over_target = true,
+			particles_enabled = true,
+			particle_spread = 1.5,
+			particles_per_second = 200,
+			particles_per_length = 70,
+			particle_max_lifetime = 2000,
+			particle_max_initial_velocity = 10,
+			particle_velocity_from_cursor = 0,
+			particle_random_velocity = 300,
+			particle_damping = 0.1,
+			particle_gravity = 50,
 		},
 	},
 	-- {
