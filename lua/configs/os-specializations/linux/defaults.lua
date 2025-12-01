@@ -1,4 +1,4 @@
-local M = require("configs.os-specializations.defaults").newa()
+local M = require("configs.os-specializations.defaults").new()
 
 M.custom.completionOpen = "<F13>"
 return M
