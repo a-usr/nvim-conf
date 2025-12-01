@@ -3,7 +3,7 @@ vim.lsp.inlay_hint.enable()
 
 local servers = {
 	{ "html", {
-		cmd = require("configs.os-dependend").lsp.html.cmd,
+		cmd = require("configs.os-specializations").lsp.html.cmd,
 		filetype = { "html", "razor" },
 	} },
 	"cssls",

@@ -64,7 +64,7 @@ local adapters = {
 
 multiassign(adapters, dap.adapters)
 
-multiassign(require("configs.os-dependend").dap.adapters, dap.adapters)
+multiassign(require("configs.os-specializations").dap.adapters, dap.adapters)
 
 local launchjson_type_to_ft = {
   [js_types] = {

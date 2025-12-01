@@ -1,4 +1,4 @@
-local platform_options = require("configs.os-dependend").options
+local platform_options = require("configs.os-specializations").options
 -- add yours here!
 
 local o = vim.o

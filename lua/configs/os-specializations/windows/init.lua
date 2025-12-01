@@ -1,4 +1,4 @@
-local M = require "configs.os-dependend.defaults"
+local M = require("configs.os-specializations.defaults").new()
 
 --- HACK: On Windows Terminal I bound <C-Space> to F13, as <C-Space> wouldnt emit for some reason
 M.custom.completionOpen = "<F13>"

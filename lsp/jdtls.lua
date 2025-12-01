@@ -1,5 +1,5 @@
 return {
   settings = {
-    cmd = require("configs.os-dependend").lsp.jdtls.cmd,
+    cmd = require("configs.os-specializations").lsp.jdtls.cmd,
   },
 }
