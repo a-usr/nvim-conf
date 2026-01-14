@@ -20,12 +20,16 @@ local function regularget(t, k)
 	return t[k]
 end
 
+local function first(v, ...)
+	return v
+end
+
 ---@generic T: table
 ---@param get fun(t: table, k: string): any
 ---@param key string
----@param first_table T
+---@param first_table T?
 ---@param ... T
----@return nil | any | [table]
+---@return table?
 local function findAllValues(get, key, first_table, ...)
 	if first_table == nil then
 		return nil
@@ -36,31 +40,34 @@ local function findAllValues(get, key, first_table, ...)
 		return findAllValues(get, key, ...)
 	end
 
-	if type(value) == "table" then
-		local nextval = findAllValues(get, key, ...)
+	local nextval = findAllValues(get, key, ...)
 
-		if nextval ~= nil then
-			assert(type(nextval) == "table", "Encountered non-table item while merging tables: " .. tostring(nextval))
+	if type(value) == "table" and nextval ~= nil then
+		if nextval[1] ~= nil then
+			assert(
+				type(nextval[1]) == "table",
+				"Encountered non-table item while merging tables: " .. tostring(nextval)
+			)
 		end
 
-		return value, nextval
+		return { value, unpack(nextval) }
 	else
-		return value
+		return { value }
 	end
 end
 
--- Snacks.debug(
--- 	findAllValues(
--- 		rawget,
--- 		"a",
--- 		{ a = { x = "1" }, c = "d" },
--- 		{ h = "a", a = { y = 2 }, f = "s" },
--- 		{ a = { 6, 23, "a" } }
--- 	)
--- )
+--- Snacks.debug(
+--- 	findAllValues(
+--- 		rawget,
+--- 		"a",
+--- 		{ a = { x = "1" }, c = "d" },
+--- 		{ h = "a", a = { y = 2 }, f = "s" },
+--- 		{ a = { 6, 23, "a" } }
+--- 	)
+--- )
 
 --- Merge tables recursively. Duplicate keys with non-table values are treated fifo. Due to their nature, list values will be combined too.
----@generic T
+---@generic T: table
 ---@param ... T
 ---@return T
 function M.mergeRecursively(...)
@@ -70,9 +77,11 @@ function M.mergeRecursively(...)
 		source = tables,
 		__index = function(t, k)
 			-- pack all return values
-			local value = { findAllValues(rawget, k, unpack(tables)) }
+			local value = findAllValues(rawget, k, unpack(tables))
+			assert(value ~= nil)
 			if value[1] == nil then
-				value = { findAllValues(regularget, k, unpack(tables)) }
+				value = findAllValues(regularget, k, unpack(tables))
+				assert(value ~= nil)
 			end
 
 			if type(value[1]) == "table" then
@@ -86,14 +95,19 @@ function M.mergeRecursively(...)
 	})
 end
 
--- local testvalue = M.mergeRecursively(
--- 	{ a = 1, l = false, b = { c = 2, d = { 2, 2, 1, 2 } } },
--- 	{ a = 3, b = { e = 1, d = { x = 4 }, f = "deez" }, h = true }
--- )
+--- local testvalue = M.mergeRecursively(
+--- 	{ a = 1, l = false, b = { c = 2, d = { 2, 2, 1, 2 } } },
+--- 	{ a = 3, b = { e = 1, d = { x = 4 }, f = "deez" }, h = true }
+--- )
+--- 
+--- local _ = testvalue.b.c
+--- local _ = testvalue.b.d
+--- local _ = testvalue.b.e
+--- Snacks.debug(testvalue)
 
--- local _ = testvalue.b.c
--- local _ = testvalue.b.d
--- local _ = testvalue.b.e
--- Snacks.debug(testvalue)
+---@return int ...
+local function a()
+	return 1, 2, 3
+end
 
 return M

@@ -32,7 +32,7 @@ return {
 		---@type trouble.Config
 		opts = {
 			modes = {
-				---@type trouble.Mode
+				--@type trouble.Mode
 				-- lsp_base = {
 				--   preview = {
 				--     type = "float",

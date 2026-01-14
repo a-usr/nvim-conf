@@ -7,26 +7,30 @@
 -- })
 
 local highlights = {
-  ["@lsp.type.extensionMethod"] = {
-    link = "@lsp.type.method",
-  },
+	["@lsp.type.extensionMethod"] = {
+		link = "@lsp.type.method",
+	},
 
-  Breakpoint = {
-    link = "UiPalette7Sign",
-  },
+	["@lsp.type.controlKeyword"] = {
+		link = "Operator",
+	},
 
-  DapStopped = {
-    link = "UiPalette4Sign",
-  },
+	Breakpoint = {
+		link = "UiPalette7Sign",
+	},
 
-  -- VisualNonText = vim.api.nvim_get_hl(0, { name = "Visual" }),
-  VisualNonText = {
-    link = "Visual",
-  },
+	DapStopped = {
+		link = "UiPalette4Sign",
+	},
+
+	-- VisualNonText = vim.api.nvim_get_hl(0, { name = "Visual" }),
+	VisualNonText = {
+		link = "Visual",
+	},
 }
 
 for hl, value in pairs(highlights) do
-  vim.api.nvim_set_hl(0, hl, value)
+	vim.api.nvim_set_hl(0, hl, value)
 end
 
 require("ripped.highlights").setup()

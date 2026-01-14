@@ -15,29 +15,31 @@ local servers = {
 	"roslyn",
 	"astro",
 	"nushell",
-	{
-		"basedpyright",
-		{
-			settings = {
-				basedpyright = {
-					-- Using Ruff's import organizer
-					disableOrganizeImports = true,
-				},
-				python = {
-					analysis = {
-						-- Ignore all files for analysis to exclusively use Ruff for linting
-						ignore = { "*" },
-					},
-				},
-			},
-		},
-	},
+	-- {
+	-- 	"basedpyright",
+	-- 	{
+	-- 		settings = {
+	-- 			basedpyright = {
+	-- 				-- Using Ruff's import organizer
+	-- 				disableOrganizeImports = true,
+	-- 			},
+	-- 			python = {
+	-- 				analysis = {
+	-- 					-- Ignore all files for analysis to exclusively use Ruff for linting
+	-- 					ignore = { "*" },
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
+	"ty",
 	"ruff",
 	"svelte",
 	"hls",
 	"rzls",
 	"tinymist",
-	"lua_ls",
+	"emmylua_ls",
+	-- "lua_ls",
 }
 
 local on_attach = function(client, bufnr)

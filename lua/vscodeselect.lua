@@ -1,48 +1,56 @@
 local M = {}
 
+function M.select2(items, opts, on_choice)
+	opts.snacks = {
+		layout = { preset = "vscode" },
+	}
+
+	return Snacks.picker.select(items, opts, on_choice)
+end
+
 function M.select(items, opts, on_choice)
-  assert(type(on_choice) == "function", "on_choice must be a function")
-  opts = opts or {}
+	assert(type(on_choice) == "function", "on_choice must be a function")
+	opts = opts or {}
 
-  ---@type snacks.picker.finder.Item[]
-  local finder_items = {}
-  for idx, item in ipairs(items) do
-    local text = (opts.format_item or tostring)(item)
-    table.insert(finder_items, {
-      formatted = text,
-      text = idx .. " " .. text,
-      item = item,
-      idx = idx,
-    })
-  end
+	---@type snacks.picker.finder.Item[]
+	local finder_items = {}
+	for idx, item in ipairs(items) do
+		local text = (opts.format_item or tostring)(item)
+		table.insert(finder_items, {
+			formatted = text,
+			text = idx .. " " .. text,
+			item = item,
+			idx = idx,
+		})
+	end
 
-  local title = opts.prompt or "Select"
-  title = title:gsub("^%s*", ""):gsub("[%s:]*$", "")
+	local title = opts.prompt or "Select"
+	title = title:gsub("^%s*", ""):gsub("[%s:]*$", "")
 
-  ---@type snacks.picker.finder.Item[]
-  return Snacks.picker.pick {
-    source = "select",
-    items = finder_items,
-    main = { current = true },
-    format = Snacks.picker.format.ui_select(opts.kind, #items),
-    layout = {
-      preset = "vscode",
-      -- preview = false,
-      -- layout = {
-      --   height = math.floor(math.min(vim.o.lines * 0.8 - 10, #items + 2) + 0.5) + 10,
-      --   title = " " .. title .. " ",
-      --   title_pos = "center",
-      -- },
-    },
-    actions = {
-      confirm = function(picker, item)
-        picker:close()
-        vim.schedule(function()
-          on_choice(item and item.item, item and item.idx)
-        end)
-      end,
-    },
-  }
+	---@type snacks.picker.finder.Item[]
+	return Snacks.picker.pick({
+		source = "select",
+		items = finder_items,
+		main = { current = true },
+		format = Snacks.picker.format.ui_select(opts.kind, #items),
+		layout = {
+			preset = "vscode",
+			-- preview = false,
+			-- layout = {
+			--   height = math.floor(math.min(vim.o.lines * 0.8 - 10, #items + 2) + 0.5) + 10,
+			--   title = " " .. title .. " ",
+			--   title_pos = "center",
+			-- },
+		},
+		actions = {
+			confirm = function(picker, item)
+				picker:close()
+				vim.schedule(function()
+					on_choice(item and item.item, item and item.idx)
+				end)
+			end,
+		},
+	})
 end
 
 return M

@@ -457,7 +457,13 @@ return {
 			particle_damping = 0.1,
 			particle_gravity = 50,
 		},
-	},
+	},{
+  "A7Lavinraj/fyler.nvim",
+  dependencies = { "nvim-mini/mini.icons" },
+  -- branch = "stable",  -- Use stable branch for production
+  -- lazy = false, -- Necessary for `default_explorer` to work properly
+  opts = {}
+}
 	-- {
 	--   -- enabled = false,
 	--   "utilyre/barbecue.nvim",

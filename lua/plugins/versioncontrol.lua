@@ -1,25 +1,19 @@
 return {
-  {
-    "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
-    opts = {
-      view = {
-        merge_tool = {
-          layout = "diff3_mixed",
-        },
-      },
-    },
-  },
-  {
-    "akinsho/git-conflict.nvim",
-    event = "BufReadPost",
-  },
+	{
+		"esmuellert/codediff.nvim",
+		dependencies = { "MunifTanjim/nui.nvim" },
+		cmd = "CodeDiff",
+	},
+	{
+		"akinsho/git-conflict.nvim",
+		event = "BufReadPost",
+	},
 
-  {
-    "lewis6991/gitsigns.nvim",
-    opts = {
-      -- numhl = true,
-    },
-    event = "BufEnter",
-  },
+	{
+		"lewis6991/gitsigns.nvim",
+		opts = {
+			-- numhl = true,
+		},
+		event = "BufEnter",
+	},
 }
