@@ -32,6 +32,8 @@ vim.opt.rtp:prepend(lazypath)
 local lazy_config = require("configs.lazy")
 local language_plugins = require("languages")
 
+require("vim._core.ui2").enable({ enable = true, msg = { target = "msg" } })
+
 local all_plugins = vim.iter({
 	{
 		{ import = "plugins" },

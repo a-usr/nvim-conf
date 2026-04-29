@@ -5,7 +5,7 @@ return {
 			---@module "snacks"
 			---@type snacks.Config
 			local opts = {}
-			opts.dashboard = require "configs.snackdash"
+			-- opts.dashboard = require("configs.snackdash")
 			opts.notifier = {
 				enabled = true,
 			}
@@ -64,12 +64,12 @@ return {
 								border = "right",
 								title = "{source} {live}",
 								title_pos = "center",
-								{ height = 1,   border = "none", box = "horizontal" },
+								{ height = 1, border = "none", box = "horizontal" },
 								{
 									height = 2,
 									box = "horizontal",
-									{ box = "horizontal", width = 5,  height = 0.2 },
-									{ win = "input",      height = 2, border = "none" },
+									{ box = "horizontal", width = 5, height = 0.2 },
+									{ win = "input", height = 2, border = "none" },
 								},
 								{ win = "list", border = "none" },
 							},
@@ -89,7 +89,7 @@ return {
 			return opts
 		end,
 		config = function(plug, opts)
-			local snacks = require "snacks"
+			local snacks = require("snacks")
 			snacks.setup(opts)
 			vim.ui.select = snacks.picker.select
 		end,
@@ -99,14 +99,14 @@ return {
 
 	{
 		"folke/neoconf.nvim",
-		config = require "configs.neoconf",
+		config = require("configs.neoconf"),
 	},
 	{
 		"amitds1997/remote-nvim.nvim",
-		version = "*",              -- Pin to GitHub releases
+		version = "*", -- Pin to GitHub releases
 		dependencies = {
 			"nvim-lua/plenary.nvim", -- For standard functions
-			"a-usr/nui.nvim",       -- To build the plugin UI
+			"a-usr/nui.nvim", -- To build the plugin UI
 			"nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
 		},
 		config = true,
@@ -129,7 +129,8 @@ return {
 		cmd = "Nerdy",
 	},
 	{
-		"nvim-treesitter/nvim-treesitter",
+		"neovim-treesitter/nvim-treesitter",
+		dependencies = { "neovim-treesitter/treesitter-parser-registry" },
 		opts = {
 			ensure_installed = {
 				"vim",
@@ -141,7 +142,7 @@ return {
 		},
 		build = ":TSUpdate",
 		config = function(_, opts)
-			local configs = require "nvim-treesitter.configs"
+			local configs = require("nvim-treesitter.configs")
 
 			configs.setup(opts)
 
@@ -174,7 +175,7 @@ return {
 			},
 		},
 		config = function(_, config)
-			local persisted = require "persisted"
+			local persisted = require("persisted")
 			persisted.setup(config)
 		end,
 	},

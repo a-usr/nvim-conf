@@ -1,9 +1,5 @@
 return {
 	{
-		"neovim/nvim-treesitter",
-		event = "BufEnter",
-	},
-	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = function(_, opts)
@@ -457,13 +453,14 @@ return {
 			particle_damping = 0.1,
 			particle_gravity = 50,
 		},
-	},{
-  "A7Lavinraj/fyler.nvim",
-  dependencies = { "nvim-mini/mini.icons" },
-  -- branch = "stable",  -- Use stable branch for production
-  -- lazy = false, -- Necessary for `default_explorer` to work properly
-  opts = {}
-}
+	},
+	{
+		"A7Lavinraj/fyler.nvim",
+		dependencies = { "nvim-mini/mini.icons" },
+		-- branch = "stable",  -- Use stable branch for production
+		-- lazy = false, -- Necessary for `default_explorer` to work properly
+		opts = {},
+	},
 	-- {
 	--   -- enabled = false,
 	--   "utilyre/barbecue.nvim",
