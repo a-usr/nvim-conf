@@ -1,5 +1,7 @@
 local util = require("mappings.util")
 
+local diag_virt_lines_conf
+local diag_virt_text_conf
 return util.Map({
 
 	on = "LSP attach",
@@ -10,9 +12,19 @@ return util.Map({
 			{
 				"t",
 				function()
-					require("lsp_lines").toggle()
+					local opts = vim.diagnostic.config() or {}
+					diag_virt_lines_conf = opts.virtual_lines or diag_virt_lines_conf
+					diag_virt_text_conf = opts.virtual_text or diag_virt_text_conf
+
+					local new_virt_text = (not opts.virtual_text) and diag_virt_text_conf
+					local new_virt_lines = new_virt_text and diag_virt_lines_conf
+
+					vim.diagnostic.config({
+						virtual_text = new_virt_text,
+						virtual_lines = new_virt_lines,
+					})
 				end,
-				desc = "Toggle Lsp Lines",
+				desc = "Toggle Lsp Diagnostics",
 			},
 			{
 				"c",

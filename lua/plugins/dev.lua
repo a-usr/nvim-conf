@@ -58,22 +58,6 @@ return {
 
 	{ "Issafalcon/lsp-overloads.nvim", config = false, cond = not vim.g.vscode },
 
-	{
-
-		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-		cond = not vim.g.vscode,
-		dependencies = {
-			"neovim/nvim-lspconfig",
-		},
-		event = "BufReadPost",
-		config = function()
-			vim.diagnostic.config({
-				virtual_text = false,
-				virtual_lines = false,
-			})
-			require("lsp_lines").setup()
-		end,
-	},
 	-- { import = "nvchad.blink.lazyspec" },
 	{
 		-- enabled = require("configs.os-specializations").plugins.blink.enable,
@@ -237,7 +221,6 @@ return {
 		dependencies = {
 			"nvim-neotest/nvim-nio",
 			"nvim-lua/plenary.nvim",
-			"antoinemadec/FixCursorHold.nvim",
 			"neovim-treesitter/nvim-treesitter",
 		},
 		config = require("configs.neotest"),

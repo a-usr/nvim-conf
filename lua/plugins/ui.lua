@@ -434,6 +434,7 @@ return {
 	},
 	{
 		"sphamba/smear-cursor.nvim",
+		enabled = false,
 		event = "BufEnter",
 		opts = {
 			smear_to_cmd = false,
@@ -459,7 +460,11 @@ return {
 		dependencies = { "nvim-mini/mini.icons" },
 		-- branch = "stable",  -- Use stable branch for production
 		-- lazy = false, -- Necessary for `default_explorer` to work properly
-		opts = {},
+		opts = {
+			integrations = {
+				icon = "nvim_web_devicons",
+			},
+		},
 	},
 	-- {
 	--   -- enabled = false,

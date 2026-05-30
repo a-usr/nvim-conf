@@ -5,10 +5,10 @@ local o = vim.o
 -- o.cursorlineopt ='both' -- to enable cursorline!
 require("lib.shells." .. platform_options.shell)
 
-if vim.fn.has "win32" ~= 0 then
-  o.shellslash = true
+if vim.fn.has("win32") ~= 0 then
+	o.shellslash = true
 end
-o.sessionoptions = "buffers,curdir,folds,winsize,winpos,skiprtp,resize"
+o.sessionoptions = "buffers,curdir,folds,winsize,winpos,skiprtp"
 o.foldcolumn = "auto:1"
 o.splitkeep = "screen"
 
@@ -33,3 +33,4 @@ o.smartcase = true
 
 o.laststatus = 3
 o.showmode = false
+o.winborder = "single"

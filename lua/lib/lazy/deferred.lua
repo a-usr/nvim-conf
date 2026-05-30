@@ -1,7 +1,7 @@
 -- Functionality to facilitate the delaying of code execution until a notification has been sent with the awaited value
 local coro = coroutine
 
----@type {waiters: thread[], value: any}[]
+---@type table<string, {waiters: thread[], value: any}?>
 local modules = {}
 
 ---@class lib.lazy.context
@@ -29,7 +29,7 @@ end
 
 local M = {}
 
----@param f fun(ctx: lib.lazy.context )
+---@param f async fun(ctx: lib.lazy.context )
 function M.wrap(f)
 	local co = coro.create(f)
 

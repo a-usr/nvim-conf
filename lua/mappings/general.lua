@@ -172,9 +172,10 @@ return require("mappings.util").Map({
 			--   }
 			-- end,
 			function()
-				Snacks.explorer()
+				local f = require("fyler")
+				f.toggle({ kind = "split_left_most", dir = vim.uv.cwd() })
 			end,
-			desc = "FileTree Toggle",
+			desc = "File Tree Toggle",
 		},
 	},
 

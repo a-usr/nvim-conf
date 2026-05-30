@@ -2,6 +2,7 @@ local lazy = require("lib.lazy.deferred")
 
 lazy.wrap(function(ctx)
 	local dap = ctx:await("dap")
+	local _ = ctx:await("dap-cs")
 
 	local nvim_data = vim.fn.stdpath("data")
 
@@ -54,20 +55,24 @@ lazy.wrap(function(ctx)
 		},
 	}
 
-	dap.configurations.cs = {
+	local defaults = {
 		type = "coreclr",
 		name = "Launch",
-		request = "launch",
-		program = "dotnet exe path", -- Note: Please include the actual path!
-		args = {},
-		cwd = vim.fn.getcwd(),
+		-- cwd = vim.fn.getcwd(),
 		clientID = "vscode",
 		clientName = "Visual Studio Code",
-		externalTerminal = true,
-		columnsStartAt1 = true,
-		linesStartAt1 = true,
+		-- externalTerminal = true,
+		-- columnsStartAt1 = true,
+		-- linesStartAt1 = true,
 		locale = "en",
-		pathFormat = "path",
-		externalConsole = true,
+		-- pathFormat = "path",
+		-- externalConsole = true,
 	}
+
+	local configs = dap.configurations.cs
+	dap.configurations.cs = vim.iter(configs)
+		:map(function(v)
+			return vim.tbl_extend("keep", v, defaults)
+		end)
+		:totable()
 end)

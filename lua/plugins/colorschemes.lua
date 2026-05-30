@@ -17,6 +17,7 @@ return {
 		lazy = false,
 		priority = 1000,
 		-- tag = "v2.0.2",
+		commit = "a03471f",
 		opts = {
 			-- Your configuration options here.
 			ui = {

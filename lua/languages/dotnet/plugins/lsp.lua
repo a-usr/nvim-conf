@@ -8,6 +8,6 @@ return {
 		},
 	},
 	opts = {
-		-- filewatching = ,
+		filewatching = "roslyn",
 	},
 }

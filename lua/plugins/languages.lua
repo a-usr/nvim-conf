@@ -2,7 +2,6 @@ return {
 
 	{
 		"OXY2DEV/markview.nvim",
-		enable = false,
 		-- lazy = false,      -- Recommended
 		ft = { "markdown", "typst" }, -- If you decide to lazy-load anyway
 		main = "markview",

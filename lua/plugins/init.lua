@@ -132,28 +132,31 @@ return {
 		"neovim-treesitter/nvim-treesitter",
 		dependencies = { "neovim-treesitter/treesitter-parser-registry" },
 		opts = {
-			ensure_installed = {
-				"vim",
-				"lua",
-				"vimdoc",
-				"html",
-				"css",
+			local_parsers = {
+				lua_patterns = {
+					source = {
+						url = "https://github.com/OXY2DEV/tree-sitter-lua_patterns",
+						semver = false,
+						queries_dir = "queries",
+						type = "self_contained",
+					},
+				},
 			},
 		},
 		build = ":TSUpdate",
 		config = function(_, opts)
-			local configs = require("nvim-treesitter.configs")
+			local ts = require("nvim-treesitter")
 
-			configs.setup(opts)
+			ts.setup(opts)
 
-			local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
-			parser_configs.lua_patterns = {
-				install_info = {
-					url = "https://github.com/OXY2DEV/tree-sitter-lua_patterns",
-					files = { "src/parser.c" },
-					branch = "main",
-				},
-			}
+			ts.install({
+				"vim",
+				"lua",
+				"lua_patterns",
+				"vimdoc",
+				"html",
+				"css",
+			})
 		end,
 	},
 

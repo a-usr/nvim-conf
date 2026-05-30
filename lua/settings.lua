@@ -6,6 +6,13 @@ vim.filetype.add({
 })
 
 vim.diagnostic.config({
+	virtual_text = {
+		current_line = false,
+		severity = { min = vim.diagnostic.severity.INFO },
+	},
+	virtual_lines = {
+		current_line = true,
+	},
 	signs = {
 		text = {
 			[vim.diagnostic.severity.ERROR] = "",

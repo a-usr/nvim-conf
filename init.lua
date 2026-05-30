@@ -51,7 +51,7 @@ require("settings")
 require("autocmds")
 require("signs")
 require("highlights")
-require("configs.lsp")
+require("lspconfig")
 
 vim.schedule(function()
 	require("mappings")
